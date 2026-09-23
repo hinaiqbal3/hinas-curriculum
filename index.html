@@ -56,9 +56,32 @@
       color: var(--soft-text);
     }
 
-    .title-wrap {
-      margin-top: 90px;
-    }
+.hero {
+  margin-top: 75px;
+  display: grid;
+  grid-template-columns: 1.05fr 0.7fr;
+  gap: 80px;
+  align-items: center;
+}
+
+.title-wrap {
+  margin-top: 0;
+}
+
+.portrait-wrap {
+  display: flex;
+  justify-content: flex-end;
+}
+
+.portrait {
+  width: 100%;
+  max-width: 350px;
+  height: 430px;
+  object-fit: cover;
+  object-position: center;
+  border-radius: 3px;
+  display: block;
+}
 
     h1 {
       margin: 0;
@@ -201,9 +224,26 @@
         min-height: 55vh;
       }
 
-      .title-wrap {
-        margin-top: 75px;
-      }
+.hero {
+  margin-top: 65px;
+  grid-template-columns: 1fr;
+  gap: 45px;
+}
+
+.title-wrap {
+  margin-top: 0;
+}
+
+.portrait-wrap {
+  justify-content: flex-start;
+}
+
+.portrait {
+  width: 72%;
+  height: auto;
+  max-height: 500px;
+  object-fit: cover;
+}
 
       h1 {
         font-size: clamp(55px, 18vw, 90px);
@@ -246,22 +286,30 @@
         <span>A Living Index</span>
       </div>
 
-      <div class="title-wrap">
+      <div class="hero">
 
-        <h1>
-          hina's<br>
-          curriculum
-        </h1>
+  <div class="title-wrap">
 
-        <div class="subtitle">
-          my living curriculum & second brain
-        </div>
+    <h1>
+      hina's<br>
+      curriculum
+    </h1>
 
-        <div class="verbs">
-          learning · making · noticing · collecting · becoming
-        </div>
+    <div class="subtitle">
+      my living curriculum & second brain
+    </div>
 
-      </div>
+    <div class="verbs">
+      learning · making · noticing · collecting · becoming
+    </div>
+
+  </div>
+
+  <div class="portrait-wrap">
+    <img src="hina.jpg" alt="Hina" class="portrait">
+  </div>
+
+</div>
 
     </header>
 
