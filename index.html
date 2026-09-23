@@ -1,0 +1,473 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <title>Hina's Curriculum</title>
+
+  <style>
+    * {
+      box-sizing: border-box;
+    }
+
+    :root {
+      --background: #eaf3fb;
+      --text: #355b7d;
+      --soft-text: #6887a2;
+      --line: rgba(53, 91, 125, 0.20);
+    }
+
+    body {
+      margin: 0;
+      background: var(--background);
+      color: var(--text);
+      font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+      font-weight: 300;
+      transition:
+        background-color 0.6s ease,
+        color 0.6s ease;
+    }
+
+    .page {
+      width: min(1120px, calc(100% - 80px));
+      margin: 0 auto;
+      padding: 65px 0 90px;
+    }
+
+    /* ---------- HEADER ---------- */
+
+    header {
+      min-height: 45vh;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      padding-bottom: 55px;
+    }
+
+    .topline {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+
+      font-size: 12px;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      color: var(--soft-text);
+    }
+
+    .title-wrap {
+      margin-top: 90px;
+    }
+
+    h1 {
+      margin: 0;
+
+      font-size: clamp(58px, 10vw, 125px);
+      line-height: 0.9;
+
+      font-weight: 300;
+      letter-spacing: -0.065em;
+    }
+
+    .subtitle {
+      margin-top: 30px;
+      max-width: 550px;
+
+      font-size: 18px;
+      line-height: 1.6;
+      color: var(--soft-text);
+    }
+
+    .verbs {
+      margin-top: 25px;
+
+      font-size: 11px;
+      text-transform: uppercase;
+      letter-spacing: 0.14em;
+
+      color: var(--soft-text);
+    }
+
+
+    /* ---------- INDEX ---------- */
+
+    .index-heading {
+      border-top: 1px solid var(--line);
+      padding: 20px 0 18px;
+
+      font-size: 11px;
+      text-transform: uppercase;
+      letter-spacing: 0.18em;
+      color: var(--soft-text);
+    }
+
+    .index {
+      border-bottom: 1px solid var(--line);
+    }
+
+    .entry {
+      position: relative;
+
+      display: grid;
+      grid-template-columns: 85px 1fr 1fr;
+      gap: 30px;
+      align-items: center;
+
+      min-height: 125px;
+      padding: 25px 0;
+
+      border-top: 1px solid var(--line);
+
+      color: inherit;
+      text-decoration: none;
+
+      transition:
+        padding-left 0.25s ease,
+        opacity 0.25s ease;
+    }
+
+    .entry:hover {
+      padding-left: 15px;
+    }
+
+    .number {
+      font-size: 13px;
+      color: var(--soft-text);
+      letter-spacing: 0.08em;
+    }
+
+    .entry-title {
+      font-size: clamp(28px, 4vw, 47px);
+      letter-spacing: -0.04em;
+      font-weight: 300;
+    }
+
+    .description {
+      max-width: 360px;
+
+      font-size: 14px;
+      line-height: 1.6;
+
+      color: var(--soft-text);
+    }
+
+    .arrow {
+      position: absolute;
+      right: 0;
+
+      opacity: 0;
+      transform: translateX(-10px);
+
+      font-size: 24px;
+
+      transition:
+        opacity 0.25s ease,
+        transform 0.25s ease;
+    }
+
+    .entry:hover .arrow {
+      opacity: 1;
+      transform: translateX(0);
+    }
+
+
+    /* ---------- FOOTER ---------- */
+
+    footer {
+      display: flex;
+      justify-content: space-between;
+
+      padding-top: 55px;
+
+      font-size: 10px;
+      text-transform: uppercase;
+      letter-spacing: 0.14em;
+
+      color: var(--soft-text);
+    }
+
+
+    /* ---------- MOBILE ---------- */
+
+    @media (max-width: 720px) {
+
+      .page {
+        width: min(100% - 40px, 1120px);
+        padding-top: 35px;
+      }
+
+      header {
+        min-height: 55vh;
+      }
+
+      .title-wrap {
+        margin-top: 75px;
+      }
+
+      h1 {
+        font-size: clamp(55px, 18vw, 90px);
+      }
+
+      .entry {
+        grid-template-columns: 45px 1fr;
+        gap: 10px 15px;
+
+        min-height: 120px;
+      }
+
+      .description {
+        grid-column: 2;
+        padding-right: 20px;
+      }
+
+      .arrow {
+        display: none;
+      }
+
+      footer {
+        flex-direction: column;
+        gap: 10px;
+      }
+    }
+
+  </style>
+</head>
+
+
+<body>
+
+  <main class="page">
+
+    <header>
+
+      <div class="topline">
+        <span>Hina's Curriculum</span>
+        <span>A Living Index</span>
+      </div>
+
+      <div class="title-wrap">
+
+        <h1>
+          hina's<br>
+          curriculum
+        </h1>
+
+        <div class="subtitle">
+          my living curriculum & second brain
+        </div>
+
+        <div class="verbs">
+          learning · making · noticing · collecting · becoming
+        </div>
+
+      </div>
+
+    </header>
+
+
+    <div class="index-heading">
+      The Index
+    </div>
+
+
+    <section class="index">
+
+
+      <a class="entry"
+         href="commonplace.html"
+         data-bg="#e6f3fb"
+         data-text="#28658c">
+
+        <div class="number">01</div>
+
+        <div class="entry-title">
+          commonplace
+        </div>
+
+        <div class="description">
+          quotations, images, passages, ideas & things
+          I encounter and want to keep
+        </div>
+
+        <div class="arrow">→</div>
+
+      </a>
+
+
+      <a class="entry"
+         href="medicine.html"
+         data-bg="#e9ebfb"
+         data-text="#4b5791">
+
+        <div class="number">02</div>
+
+        <div class="entry-title">
+          medicine
+        </div>
+
+        <div class="description">
+          infectious diseases, clinical reasoning, papers,
+          cases & questions I want to understand
+        </div>
+
+        <div class="arrow">→</div>
+
+      </a>
+
+
+      <a class="entry"
+         href="writing.html"
+         data-bg="#fae7f1"
+         data-text="#9b3f70">
+
+        <div class="number">03</div>
+
+        <div class="entry-title">
+          writing
+        </div>
+
+        <div class="description">
+          seeds → fragments → drafts → finished pieces
+        </div>
+
+        <div class="arrow">→</div>
+
+      </a>
+
+
+      <a class="entry"
+         href="narrative-medicine.html"
+         data-bg="#f0e8fa"
+         data-text="#765496">
+
+        <div class="number">04</div>
+
+        <div class="entry-title">
+          narrative medicine
+        </div>
+
+        <div class="description">
+          readings, exercises, curriculum ideas,
+          research questions & an evolving body of work
+        </div>
+
+        <div class="arrow">→</div>
+
+      </a>
+
+
+      <a class="entry"
+         href="projects.html"
+         data-bg="#fbe9e3"
+         data-text="#a45449">
+
+        <div class="number">05</div>
+
+        <div class="entry-title">
+          projects
+        </div>
+
+        <div class="description">
+          things I'm actively building
+        </div>
+
+        <div class="arrow">→</div>
+
+      </a>
+
+
+      <a class="entry"
+         href="life-practice.html"
+         data-bg="#e7f1e9"
+         data-text="#52765c">
+
+        <div class="number">06</div>
+
+        <div class="entry-title">
+          life / practice
+        </div>
+
+        <div class="description">
+          physical capacity, routines, travel & whatever else
+          belongs in my curriculum
+        </div>
+
+        <div class="arrow">→</div>
+
+      </a>
+
+
+      <a class="entry"
+         href="archive.html"
+         data-bg="#efedf3"
+         data-text="#686174">
+
+        <div class="number">07</div>
+
+        <div class="entry-title">
+          archive
+        </div>
+
+        <div class="description">
+          things that mattered once but don't need
+          my attention now
+        </div>
+
+        <div class="arrow">→</div>
+
+      </a>
+
+
+    </section>
+
+
+    <footer>
+
+      <span>Hina's Curriculum</span>
+
+      <span>
+        always in progress
+      </span>
+
+    </footer>
+
+  </main>
+
+
+  <script>
+
+    const body = document.body;
+    const entries = document.querySelectorAll(".entry");
+
+    const originalBackground = "#eaf3fb";
+    const originalText = "#355b7d";
+
+    entries.forEach(entry => {
+
+      entry.addEventListener("mouseenter", () => {
+
+        body.style.backgroundColor =
+          entry.dataset.bg;
+
+        body.style.color =
+          entry.dataset.text;
+
+      });
+
+      entry.addEventListener("mouseleave", () => {
+
+        body.style.backgroundColor =
+          originalBackground;
+
+        body.style.color =
+          originalText;
+
+      });
+
+    });
+
+  </script>
+
+</body>
+</html>
