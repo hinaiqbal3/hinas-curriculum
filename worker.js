@@ -2,7 +2,7 @@ export default {
   async fetch(request, env) {
     const url = new URL(request.url);
 
-    // Get all thoughts from one section
+    // Get all thoughts in a section
     if (url.pathname === "/api/thoughts" && request.method === "GET") {
       const section = url.searchParams.get("section");
 
@@ -17,7 +17,7 @@ export default {
       return Response.json(results);
     }
 
-    // Create a new thought
+    // Create a thought
     if (url.pathname === "/api/thoughts" && request.method === "POST") {
       const data = await request.json();
 
@@ -38,27 +38,121 @@ export default {
         .bind(section, title)
         .run();
 
+      const thought = await env.DB.prepare(
+        `SELECT * FROM thoughts WHERE id = ?`
+      )
+        .bind(result.meta.last_row_id)
+        .first();
+
+      return Response.json(thought);
+    }
+
+    // Get one thought and everything added to it
+    if (
+      url.pathname.match(/^\/api\/thoughts\/\d+$/) &&
+      request.method === "GET"
+    ) {
+      const id = url.pathname.split("/").pop();
+
+      const thought = await env.DB.prepare(
+        `SELECT * FROM thoughts WHERE id = ?`
+      )
+        .bind(id)
+        .first();
+
+      if (!thought) {
+        return Response.json(
+          { error: "Thought not found." },
+          { status: 404 }
+        );
+      }
+
+      const { results: entries } = await env.DB.prepare(
+        `SELECT * FROM thought_entries
+         WHERE thought_id = ?
+         ORDER BY created_at ASC, id ASC`
+      )
+        .bind(id)
+        .all();
+
       return Response.json({
-        id: result.meta.last_row_id,
-        section,
-        title
+        ...thought,
+        entries
       });
     }
 
-    // Add/update the longer text inside a thought
+    // Add another entry to an existing thought
     if (
-      url.pathname.startsWith("/api/thoughts/") &&
-      request.method === "PUT"
+      url.pathname.match(/^\/api\/thoughts\/\d+\/entries$/) &&
+      request.method === "POST"
     ) {
-      const id = url.pathname.split("/").pop();
+      const parts = url.pathname.split("/");
+      const thoughtId = parts[3];
+
       const data = await request.json();
+      const content = data.content?.trim();
+
+      if (!content) {
+        return Response.json(
+          { error: "Entry cannot be empty." },
+          { status: 400 }
+        );
+      }
+
+      const thought = await env.DB.prepare(
+        `SELECT id FROM thoughts WHERE id = ?`
+      )
+        .bind(thoughtId)
+        .first();
+
+      if (!thought) {
+        return Response.json(
+          { error: "Thought not found." },
+          { status: 404 }
+        );
+      }
+
+      const result = await env.DB.prepare(
+        `INSERT INTO thought_entries (thought_id, content)
+         VALUES (?, ?)`
+      )
+        .bind(thoughtId, content)
+        .run();
 
       await env.DB.prepare(
         `UPDATE thoughts
-         SET body = ?, updated_at = CURRENT_TIMESTAMP
+         SET updated_at = CURRENT_TIMESTAMP
          WHERE id = ?`
       )
-        .bind(data.body ?? "", id)
+        .bind(thoughtId)
+        .run();
+
+      const entry = await env.DB.prepare(
+        `SELECT * FROM thought_entries WHERE id = ?`
+      )
+        .bind(result.meta.last_row_id)
+        .first();
+
+      return Response.json(entry);
+    }
+
+    // Delete a thought and its entries
+    if (
+      url.pathname.match(/^\/api\/thoughts\/\d+$/) &&
+      request.method === "DELETE"
+    ) {
+      const id = url.pathname.split("/").pop();
+
+      await env.DB.prepare(
+        `DELETE FROM thought_entries WHERE thought_id = ?`
+      )
+        .bind(id)
+        .run();
+
+      await env.DB.prepare(
+        `DELETE FROM thoughts WHERE id = ?`
+      )
+        .bind(id)
         .run();
 
       return Response.json({ success: true });
