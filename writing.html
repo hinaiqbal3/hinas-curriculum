@@ -1,0 +1,928 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Writing — Hina's Curriculum</title>
+
+  <style>
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      min-height: 100vh;
+      background: #fae7f1;
+      color: #9b3f70;
+      font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+      font-weight: 300;
+    }
+
+    button, input, textarea {
+      font: inherit;
+      font-weight: 300;
+    }
+
+    .page {
+      width: min(1120px, calc(100% - 80px));
+      margin: 0 auto;
+      padding: 55px 0 120px;
+    }
+
+    .topline {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 11px;
+      text-transform: uppercase;
+      letter-spacing: .16em;
+    }
+
+    .topline a {
+      color: inherit;
+      text-decoration: none;
+      opacity: .65;
+    }
+
+    h1 {
+      margin: 105px 0 18px;
+      font-size: clamp(58px, 9vw, 112px);
+      line-height: .9;
+      font-weight: 300;
+      letter-spacing: -.065em;
+    }
+
+    .intro {
+      max-width: 540px;
+      margin: 0;
+      font-size: 16px;
+      line-height: 1.65;
+      opacity: .68;
+    }
+
+    /* NEW THOUGHT */
+
+    .composer-wrap {
+      margin-top: 75px;
+      display: flex;
+      justify-content: center;
+    }
+
+    .composer {
+      width: min(590px, 100%);
+      min-height: 135px;
+      padding: 28px 42px;
+      border: 2px solid rgba(155,63,112,.28);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      gap: 15px;
+      background: rgba(255,255,255,.08);
+    }
+
+    .composer textarea {
+      flex: 1;
+      min-height: 68px;
+      resize: none;
+      border: 0;
+      outline: 0;
+      background: transparent;
+      color: inherit;
+      font-size: 21px;
+      line-height: 1.45;
+      text-align: center;
+    }
+
+    .composer textarea::placeholder,
+    .add-area textarea::placeholder {
+      color: rgba(155,63,112,.4);
+    }
+
+    .composer button {
+      border: 0;
+      background: transparent;
+      color: inherit;
+      font-size: 28px;
+      cursor: pointer;
+      opacity: .65;
+    }
+
+    .status {
+      min-height: 18px;
+      margin-top: 13px;
+      text-align: center;
+      font-size: 11px;
+      opacity: .5;
+    }
+
+    /* WRITING FIELD */
+
+    .field {
+      position: relative;
+      min-height: 700px;
+      margin-top: 80px;
+    }
+
+    .bubble {
+      position: absolute;
+      border: 2px solid rgba(155,63,112,.30);
+      background: rgba(255,255,255,.07);
+      color: inherit;
+      border-radius: 48% 52% 46% 54% / 55% 45% 55% 45%;
+      padding: 34px;
+      text-align: center;
+      cursor: pointer;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      transition:
+        transform .3s ease,
+        background .3s ease,
+        border-radius .3s ease;
+    }
+
+    .bubble:nth-child(2n) {
+      border-radius: 54% 46% 53% 47% / 45% 56% 44% 55%;
+    }
+
+    .bubble:nth-child(3n) {
+      border-radius: 46% 54% 44% 56% / 53% 47% 55% 45%;
+    }
+
+    .bubble:hover {
+      transform: scale(1.025);
+      background: rgba(255,255,255,.2);
+    }
+
+    .bubble-text {
+      font-size: 25px;
+      line-height: 1.42;
+      letter-spacing: -.018em;
+    }
+
+    .bubble-time {
+      margin-top: 16px;
+      font-size: 9px;
+      text-transform: uppercase;
+      letter-spacing: .1em;
+      opacity: .42;
+    }
+
+    .empty {
+      text-align: center;
+      font-size: 13px;
+      opacity: .4;
+    }
+
+    /* EXPANDED PIECE */
+
+    .overlay {
+      display: none;
+      position: fixed;
+      inset: 0;
+      z-index: 50;
+      overflow-y: auto;
+      background: rgba(250,231,241,.985);
+    }
+
+    .overlay.open {
+      display: block;
+    }
+
+    .expanded {
+      width: min(790px, calc(100% - 40px));
+      margin: 55px auto 100px;
+      min-height: 620px;
+      padding: 65px 75px;
+      border: 2px solid rgba(155,63,112,.22);
+      border-radius: 12% 9% 11% 8% / 8% 12% 9% 11%;
+      position: relative;
+    }
+
+    .close {
+      position: absolute;
+      top: 28px;
+      right: 34px;
+      border: 0;
+      background: transparent;
+      color: inherit;
+      cursor: pointer;
+      font-size: 12px;
+      opacity: .55;
+    }
+
+    .original {
+      margin-top: 30px;
+    }
+
+    .original-text {
+      font-size: clamp(29px, 4.5vw, 45px);
+      line-height: 1.25;
+      letter-spacing: -.035em;
+      white-space: pre-wrap;
+    }
+
+    .timestamp {
+      margin-top: 17px;
+      font-size: 9px;
+      text-transform: uppercase;
+      letter-spacing: .11em;
+      opacity: .42;
+    }
+
+    .tiny-action {
+      border: 0;
+      background: transparent;
+      color: inherit;
+      padding: 0;
+      margin-top: 12px;
+      font-size: 10px;
+      text-transform: uppercase;
+      letter-spacing: .1em;
+      cursor: pointer;
+      opacity: .42;
+    }
+
+    .tiny-action:hover {
+      opacity: .9;
+    }
+
+    /* EDITING */
+
+    .edit-box {
+      width: 100%;
+      min-height: 120px;
+      border: 0;
+      outline: 0;
+      resize: vertical;
+      background: rgba(255,255,255,.18);
+      color: inherit;
+      padding: 18px 20px;
+      border-radius: 30px;
+      font-size: 18px;
+      line-height: 1.55;
+    }
+
+    .edit-original {
+      font-size: 27px;
+      min-height: 160px;
+    }
+
+    .edit-actions {
+      display: flex;
+      gap: 18px;
+      margin-top: 12px;
+    }
+
+    /* LATER ENTRIES */
+
+    .entries {
+      margin-top: 65px;
+    }
+
+    .entry {
+      margin: 0 0 48px 0;
+      max-width: 610px;
+    }
+
+    .entry:nth-child(even) {
+      margin-left: 7%;
+    }
+
+    .entry-text {
+      font-size: 19px;
+      line-height: 1.7;
+      white-space: pre-wrap;
+    }
+
+    /* ADD MORE */
+
+    .add-area {
+      margin: 65px auto 0;
+      width: min(560px, 100%);
+      padding: 30px 38px;
+      border: 2px solid rgba(155,63,112,.22);
+      border-radius: 48% 52% 50% 50% / 52% 47% 53% 48%;
+    }
+
+    .add-area textarea {
+      width: 100%;
+      min-height: 95px;
+      resize: vertical;
+      border: 0;
+      outline: 0;
+      background: transparent;
+      color: inherit;
+      font-size: 17px;
+      line-height: 1.6;
+      text-align: center;
+    }
+
+    .add-row {
+      display: flex;
+      justify-content: center;
+      margin-top: 8px;
+    }
+
+    .add-row button {
+      border: 0;
+      background: transparent;
+      color: inherit;
+      font-size: 11px;
+      text-transform: uppercase;
+      letter-spacing: .11em;
+      cursor: pointer;
+      opacity: .55;
+    }
+
+    .panel-status {
+      min-height: 18px;
+      margin-top: 12px;
+      text-align: center;
+      font-size: 11px;
+      opacity: .5;
+    }
+
+    .delete-wrap {
+      margin-top: 75px;
+      text-align: center;
+    }
+
+    .delete {
+      border: 0;
+      background: transparent;
+      color: inherit;
+      font-size: 9px;
+      text-transform: uppercase;
+      letter-spacing: .12em;
+      cursor: pointer;
+      opacity: .3;
+    }
+
+    .delete:hover {
+      opacity: .8;
+    }
+
+    @media (max-width: 720px) {
+      .page {
+        width: calc(100% - 40px);
+        padding-top: 35px;
+      }
+
+      h1 { margin-top: 75px; }
+
+      .composer-wrap { margin-top: 55px; }
+
+      .composer { padding: 25px 28px; }
+
+      .composer textarea { font-size: 18px; }
+
+      .field {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 28px;
+        min-height: 400px;
+      }
+
+      .bubble {
+        position: relative;
+        left: auto !important;
+        top: auto !important;
+        width: min(92%, 380px) !important;
+        min-height: 150px !important;
+      }
+
+      .bubble-text { font-size: 22px; }
+
+      .expanded {
+        margin-top: 20px;
+        padding: 60px 28px;
+        border-radius: 45px;
+      }
+
+      .entry:nth-child(even) { margin-left: 0; }
+    }
+  </style>
+</head>
+
+<body>
+
+  <main class="page">
+
+    <div class="topline">
+      <a href="index.html">← The Index</a>
+      <span>Hina's Curriculum</span>
+    </div>
+
+    <h1>writing</h1>
+
+    <p class="intro">
+      seeds, fragments, sentences, drafts, and pieces becoming
+      something more.
+    </p>
+
+    <div class="composer-wrap">
+      <form class="composer" id="thoughtForm">
+        <textarea
+          id="thoughtInput"
+          placeholder="begin somewhere..."
+          maxlength="500"
+        ></textarea>
+
+        <button type="submit" aria-label="Add writing">+</button>
+      </form>
+    </div>
+
+    <div class="status" id="status"></div>
+
+    <section class="field" id="field"></section>
+
+  </main>
+
+
+  <div class="overlay" id="overlay">
+
+    <article class="expanded">
+
+      <button class="close" id="closeButton">close ×</button>
+
+      <section class="original" id="original"></section>
+
+      <section class="entries" id="entries"></section>
+
+      <form class="add-area" id="entryForm">
+
+        <textarea
+          id="entryInput"
+          placeholder="keep going..."
+        ></textarea>
+
+        <div class="add-row">
+          <button type="submit">add +</button>
+        </div>
+
+      </form>
+
+      <div class="panel-status" id="panelStatus"></div>
+
+      <div class="delete-wrap">
+        <button class="delete" id="deleteButton" type="button">
+          delete
+        </button>
+      </div>
+
+    </article>
+
+  </div>
+
+
+  <script>
+    const section = "writing";
+
+    const form = document.getElementById("thoughtForm");
+    const input = document.getElementById("thoughtInput");
+    const field = document.getElementById("field");
+    const status = document.getElementById("status");
+
+    const overlay = document.getElementById("overlay");
+    const original = document.getElementById("original");
+    const entries = document.getElementById("entries");
+
+    const entryForm = document.getElementById("entryForm");
+    const entryInput = document.getElementById("entryInput");
+    const panelStatus = document.getElementById("panelStatus");
+
+    const closeButton = document.getElementById("closeButton");
+    const deleteButton = document.getElementById("deleteButton");
+
+    let currentThoughtId = null;
+
+    function formatDate(value) {
+      if (!value) return "";
+
+      const utc = value.includes("T")
+        ? value
+        : value.replace(" ", "T") + "Z";
+
+      const date = new Date(utc);
+
+      const datePart = date.toLocaleDateString(undefined, {
+        month: "short",
+        day: "numeric",
+        year: "numeric"
+      });
+
+      const timePart = date.toLocaleTimeString(undefined, {
+        hour: "numeric",
+        minute: "2-digit"
+      });
+
+      return `${datePart} · ${timePart}`;
+    }
+
+    function bubbleSize(text) {
+      const length = text.length;
+
+      if (length < 55) return { width: 230, height: 155 };
+      if (length < 120) return { width: 300, height: 190 };
+      if (length < 220) return { width: 350, height: 225 };
+
+      return { width: 390, height: 255 };
+    }
+
+    function positionFor(index) {
+      const positions = [
+        [1, 10],
+        [38, 55],
+        [70, 5],
+        [13, 275],
+        [53, 325],
+        [2, 535],
+        [65, 570],
+        [31, 760]
+      ];
+
+      const base = positions[index % positions.length];
+      const cycle = Math.floor(index / positions.length);
+
+      return [base[0], base[1] + cycle * 900];
+    }
+
+    function drawThoughts(thoughts) {
+      field.innerHTML = "";
+
+      if (!thoughts.length) {
+        const empty = document.createElement("div");
+        empty.className = "empty";
+        empty.textContent = "this space is waiting for its first fragment.";
+        field.appendChild(empty);
+        return;
+      }
+
+      let greatestBottom = 700;
+
+      thoughts.forEach((thought, index) => {
+        const bubble = document.createElement("button");
+        bubble.type = "button";
+        bubble.className = "bubble";
+
+        const position = positionFor(index);
+        const size = bubbleSize(thought.title);
+
+        bubble.style.left = position[0] + "%";
+        bubble.style.top = position[1] + "px";
+        bubble.style.width = size.width + "px";
+        bubble.style.minHeight = size.height + "px";
+
+        const text = document.createElement("div");
+        text.className = "bubble-text";
+        text.textContent = thought.title;
+
+        const time = document.createElement("div");
+        time.className = "bubble-time";
+        time.textContent = formatDate(thought.created_at);
+
+        bubble.appendChild(text);
+        bubble.appendChild(time);
+
+        bubble.addEventListener("click", () => {
+          openThought(thought.id);
+        });
+
+        field.appendChild(bubble);
+
+        greatestBottom = Math.max(
+          greatestBottom,
+          position[1] + size.height + 80
+        );
+      });
+
+      field.style.minHeight = greatestBottom + "px";
+    }
+
+    async function loadThoughts() {
+      try {
+        const response = await fetch(
+          "/api/thoughts?section=" + encodeURIComponent(section)
+        );
+
+        if (!response.ok) throw new Error();
+
+        const thoughts = await response.json();
+        drawThoughts(thoughts);
+
+      } catch {
+        status.textContent = "couldn't load.";
+      }
+    }
+
+    async function openThought(id) {
+      currentThoughtId = id;
+      panelStatus.textContent = "";
+
+      try {
+        const response = await fetch("/api/thoughts/" + id);
+
+        if (!response.ok) throw new Error();
+
+        const thought = await response.json();
+
+        drawOriginal(thought);
+        drawEntries(thought.entries);
+
+        overlay.classList.add("open");
+        document.body.style.overflow = "hidden";
+
+      } catch {
+        status.textContent = "couldn't open that.";
+      }
+    }
+
+    function drawOriginal(thought) {
+      original.innerHTML = "";
+
+      const text = document.createElement("div");
+      text.className = "original-text";
+      text.textContent = thought.title;
+
+      const time = document.createElement("div");
+      time.className = "timestamp";
+      time.textContent = formatDate(thought.created_at);
+
+      const edit = document.createElement("button");
+      edit.type = "button";
+      edit.className = "tiny-action";
+      edit.textContent = "edit";
+
+      edit.addEventListener("click", () => {
+        showOriginalEditor(thought);
+      });
+
+      original.appendChild(text);
+      original.appendChild(time);
+      original.appendChild(edit);
+    }
+
+    function showOriginalEditor(thought) {
+      original.innerHTML = "";
+
+      const textarea = document.createElement("textarea");
+      textarea.className = "edit-box edit-original";
+      textarea.value = thought.title;
+
+      const actions = document.createElement("div");
+      actions.className = "edit-actions";
+
+      const save = document.createElement("button");
+      save.type = "button";
+      save.className = "tiny-action";
+      save.textContent = "save";
+
+      const cancel = document.createElement("button");
+      cancel.type = "button";
+      cancel.className = "tiny-action";
+      cancel.textContent = "cancel";
+
+      save.addEventListener("click", async () => {
+        const title = textarea.value.trim();
+        if (!title) return;
+
+        panelStatus.textContent = "saving...";
+
+        try {
+          const response = await fetch(
+            "/api/thoughts/" + thought.id,
+            {
+              method: "PATCH",
+              headers: { "Content-Type": "application/json" },
+              body: JSON.stringify({ title })
+            }
+          );
+
+          if (!response.ok) throw new Error();
+
+          panelStatus.textContent = "";
+          await openThought(thought.id);
+          await loadThoughts();
+
+        } catch {
+          panelStatus.textContent = "couldn't save that edit.";
+        }
+      });
+
+      cancel.addEventListener("click", () => {
+        drawOriginal(thought);
+      });
+
+      actions.appendChild(save);
+      actions.appendChild(cancel);
+
+      original.appendChild(textarea);
+      original.appendChild(actions);
+
+      textarea.focus();
+    }
+
+    function drawEntries(thoughtEntries) {
+      entries.innerHTML = "";
+
+      thoughtEntries.forEach(entry => {
+        const wrapper = document.createElement("article");
+        wrapper.className = "entry";
+
+        const text = document.createElement("div");
+        text.className = "entry-text";
+        text.textContent = entry.content;
+
+        const time = document.createElement("div");
+        time.className = "timestamp";
+        time.textContent = formatDate(entry.created_at);
+
+        const edit = document.createElement("button");
+        edit.type = "button";
+        edit.className = "tiny-action";
+        edit.textContent = "edit";
+
+        edit.addEventListener("click", () => {
+          showEntryEditor(wrapper, entry);
+        });
+
+        wrapper.appendChild(text);
+        wrapper.appendChild(time);
+        wrapper.appendChild(edit);
+
+        entries.appendChild(wrapper);
+      });
+    }
+
+    function showEntryEditor(wrapper, entry) {
+      wrapper.innerHTML = "";
+
+      const textarea = document.createElement("textarea");
+      textarea.className = "edit-box";
+      textarea.value = entry.content;
+
+      const actions = document.createElement("div");
+      actions.className = "edit-actions";
+
+      const save = document.createElement("button");
+      save.type = "button";
+      save.className = "tiny-action";
+      save.textContent = "save";
+
+      const cancel = document.createElement("button");
+      cancel.type = "button";
+      cancel.className = "tiny-action";
+      cancel.textContent = "cancel";
+
+      save.addEventListener("click", async () => {
+        const content = textarea.value.trim();
+        if (!content) return;
+
+        panelStatus.textContent = "saving...";
+
+        try {
+          const response = await fetch(
+            "/api/entries/" + entry.id,
+            {
+              method: "PATCH",
+              headers: { "Content-Type": "application/json" },
+              body: JSON.stringify({ content })
+            }
+          );
+
+          if (!response.ok) throw new Error();
+
+          panelStatus.textContent = "";
+          await openThought(currentThoughtId);
+
+        } catch {
+          panelStatus.textContent = "couldn't save that edit.";
+        }
+      });
+
+      cancel.addEventListener("click", () => {
+        openThought(currentThoughtId);
+      });
+
+      actions.appendChild(save);
+      actions.appendChild(cancel);
+
+      wrapper.appendChild(textarea);
+      wrapper.appendChild(actions);
+
+      textarea.focus();
+    }
+
+    function closeThought() {
+      overlay.classList.remove("open");
+      document.body.style.overflow = "";
+      currentThoughtId = null;
+      entryInput.value = "";
+      panelStatus.textContent = "";
+    }
+
+    form.addEventListener("submit", async event => {
+      event.preventDefault();
+
+      const title = input.value.trim();
+      if (!title) return;
+
+      status.textContent = "adding...";
+
+      try {
+        const response = await fetch("/api/thoughts", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ section, title })
+        });
+
+        if (!response.ok) throw new Error();
+
+        input.value = "";
+        status.textContent = "";
+
+        await loadThoughts();
+
+      } catch {
+        status.textContent = "couldn't save that.";
+      }
+    });
+
+    entryForm.addEventListener("submit", async event => {
+      event.preventDefault();
+
+      const content = entryInput.value.trim();
+
+      if (!content || !currentThoughtId) return;
+
+      panelStatus.textContent = "adding...";
+
+      try {
+        const response = await fetch(
+          "/api/thoughts/" + currentThoughtId + "/entries",
+          {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ content })
+          }
+        );
+
+        if (!response.ok) throw new Error();
+
+        entryInput.value = "";
+        panelStatus.textContent = "";
+
+        await openThought(currentThoughtId);
+
+      } catch {
+        panelStatus.textContent = "couldn't add that.";
+      }
+    });
+
+    deleteButton.addEventListener("click", async () => {
+      if (!currentThoughtId) return;
+
+      const confirmed = window.confirm(
+        "Delete this and everything you've added to it?"
+      );
+
+      if (!confirmed) return;
+
+      try {
+        const response = await fetch(
+          "/api/thoughts/" + currentThoughtId,
+          { method: "DELETE" }
+        );
+
+        if (!response.ok) throw new Error();
+
+        closeThought();
+        await loadThoughts();
+
+      } catch {
+        panelStatus.textContent = "couldn't delete that.";
+      }
+    });
+
+    closeButton.addEventListener("click", closeThought);
+
+    overlay.addEventListener("click", event => {
+      if (event.target === overlay) closeThought();
+    });
+
+    document.addEventListener("keydown", event => {
+      if (
+        event.key === "Escape" &&
+        overlay.classList.contains("open")
+      ) {
+        closeThought();
+      }
+    });
+
+    loadThoughts();
+  </script>
+
+</body>
+</html>
