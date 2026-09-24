@@ -1,0 +1,318 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <title>Commonplace — Hina's Curriculum</title>
+
+  <style>
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      min-height: 100vh;
+      background: #e6f3fb;
+      color: #28658c;
+      font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+      font-weight: 300;
+    }
+
+    .page {
+      width: min(1120px, calc(100% - 80px));
+      margin: 0 auto;
+      padding: 55px 0 100px;
+    }
+
+    .topline {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 11px;
+      text-transform: uppercase;
+      letter-spacing: .16em;
+    }
+
+    .topline a {
+      color: inherit;
+      text-decoration: none;
+      opacity: .7;
+    }
+
+    .topline a:hover {
+      opacity: 1;
+    }
+
+    h1 {
+      margin: 105px 0 18px;
+      font-size: clamp(58px, 9vw, 112px);
+      line-height: .9;
+      font-weight: 300;
+      letter-spacing: -.065em;
+    }
+
+    .intro {
+      max-width: 520px;
+      margin: 0;
+      font-size: 16px;
+      line-height: 1.6;
+      opacity: .7;
+    }
+
+    .input-area {
+      margin-top: 75px;
+    }
+
+    .thought-form {
+      display: flex;
+      align-items: center;
+      border-top: 1px solid rgba(40, 101, 140, .3);
+      border-bottom: 1px solid rgba(40, 101, 140, .3);
+    }
+
+    .thought-form input {
+      flex: 1;
+      border: 0;
+      outline: 0;
+      background: transparent;
+      color: #28658c;
+      padding: 22px 5px;
+      font-family: inherit;
+      font-size: 20px;
+      font-weight: 300;
+    }
+
+    .thought-form input::placeholder {
+      color: rgba(40, 101, 140, .45);
+    }
+
+    .thought-form button {
+      width: 55px;
+      border: 0;
+      background: transparent;
+      color: #28658c;
+      font-family: inherit;
+      font-size: 30px;
+      font-weight: 200;
+      cursor: pointer;
+    }
+
+    .field {
+      position: relative;
+      min-height: 600px;
+      margin-top: 60px;
+    }
+
+    .bubble {
+      position: absolute;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 190px;
+      min-height: 115px;
+      padding: 25px;
+      border: 1px solid rgba(40, 101, 140, .32);
+      border-radius: 50%;
+      text-align: center;
+      line-height: 1.35;
+      font-size: 16px;
+      cursor: pointer;
+      transition:
+        transform .25s ease,
+        background .25s ease;
+    }
+
+    .bubble:hover {
+      transform: scale(1.04);
+      background: rgba(255, 255, 255, .22);
+    }
+
+    .empty {
+      font-size: 13px;
+      letter-spacing: .05em;
+      opacity: .45;
+    }
+
+    .status {
+      margin-top: 15px;
+      font-size: 12px;
+      opacity: .55;
+      min-height: 18px;
+    }
+
+    @media (max-width: 720px) {
+      .page {
+        width: calc(100% - 40px);
+        padding-top: 35px;
+      }
+
+      h1 {
+        margin-top: 75px;
+      }
+
+      .input-area {
+        margin-top: 55px;
+      }
+
+      .field {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 18px;
+        min-height: 400px;
+      }
+
+      .bubble {
+        position: relative;
+        left: auto !important;
+        top: auto !important;
+        width: 150px;
+        min-height: 100px;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+  <main class="page">
+
+    <div class="topline">
+      <a href="index.html">← The Index</a>
+      <span>Hina's Curriculum</span>
+    </div>
+
+    <h1>commonplace</h1>
+
+    <p class="intro">
+      quotations, images, passages, ideas, and things encountered
+      that feel worth keeping.
+    </p>
+
+    <section class="input-area">
+
+      <form class="thought-form" id="thoughtForm">
+        <input
+          id="thoughtInput"
+          type="text"
+          placeholder="add something worth keeping..."
+          autocomplete="off"
+          maxlength="180"
+        >
+
+        <button type="submit" aria-label="Add thought">+</button>
+      </form>
+
+      <div class="status" id="status"></div>
+
+    </section>
+
+    <section class="field" id="field"></section>
+
+  </main>
+
+  <script>
+    const section = "commonplace";
+
+    const form = document.getElementById("thoughtForm");
+    const input = document.getElementById("thoughtInput");
+    const field = document.getElementById("field");
+    const status = document.getElementById("status");
+
+    function positionFor(index) {
+      const positions = [
+        [4, 4],
+        [38, 15],
+        [70, 2],
+        [18, 40],
+        [56, 45],
+        [77, 60],
+        [2, 70],
+        [36, 74]
+      ];
+
+      return positions[index % positions.length];
+    }
+
+    function drawThoughts(thoughts) {
+      field.innerHTML = "";
+
+      if (!thoughts.length) {
+        field.innerHTML =
+          '<div class="empty">your commonplace is waiting for its first thought.</div>';
+        return;
+      }
+
+      thoughts.forEach((thought, index) => {
+        const bubble = document.createElement("div");
+        const position = positionFor(index);
+
+        bubble.className = "bubble";
+        bubble.textContent = thought.title;
+
+        bubble.style.left = position[0] + "%";
+        bubble.style.top = position[1] + "px";
+
+        field.appendChild(bubble);
+      });
+    }
+
+    async function loadThoughts() {
+      try {
+        const response = await fetch(
+          "/api/thoughts?section=" + encodeURIComponent(section)
+        );
+
+        if (!response.ok) {
+          throw new Error("Could not load thoughts.");
+        }
+
+        const thoughts = await response.json();
+        drawThoughts(thoughts);
+
+      } catch (error) {
+        status.textContent = "couldn't load your thoughts.";
+      }
+    }
+
+    form.addEventListener("submit", async (event) => {
+      event.preventDefault();
+
+      const title = input.value.trim();
+
+      if (!title) return;
+
+      status.textContent = "adding...";
+
+      try {
+        const response = await fetch("/api/thoughts", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json"
+          },
+          body: JSON.stringify({
+            section,
+            title
+          })
+        });
+
+        if (!response.ok) {
+          throw new Error("Could not save thought.");
+        }
+
+        input.value = "";
+        status.textContent = "";
+
+        await loadThoughts();
+
+      } catch (error) {
+        status.textContent = "couldn't save that thought.";
+      }
+    });
+
+    loadThoughts();
+  </script>
+
+</body>
+</html>
