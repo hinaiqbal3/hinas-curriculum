@@ -516,6 +516,12 @@
     });
 
   </script>
+  <audio id="siteMusic" loop preload="auto">
+  <source src="doria.mp3" type="audio/mpeg">
+</audio>
+  <audio id="siteMusic" loop preload="auto">
+  <source src="doria.mp3" type="audio/mpeg">
+</audio>
 <div class="music-player">
   <button class="music-button" id="musicButton" type="button" aria-label="Play music">
     <span class="play-icon" id="musicIcon"></span>
@@ -590,14 +596,22 @@
 
 <script>
   const musicButton = document.getElementById("musicButton");
+  const siteMusic = document.getElementById("siteMusic");
 
-  musicButton.addEventListener("click", () => {
-    const playing = musicButton.classList.toggle("playing");
-
-    musicButton.setAttribute(
-      "aria-label",
-      playing ? "Pause music" : "Play music"
-    );
+  musicButton.addEventListener("click", async () => {
+    if (siteMusic.paused) {
+      try {
+        await siteMusic.play();
+        musicButton.classList.add("playing");
+        musicButton.setAttribute("aria-label", "Pause music");
+      } catch (error) {
+        console.log("Audio could not play:", error);
+      }
+    } else {
+      siteMusic.pause();
+      musicButton.classList.remove("playing");
+      musicButton.setAttribute("aria-label", "Play music");
+    }
   });
 </script>
 </body>
