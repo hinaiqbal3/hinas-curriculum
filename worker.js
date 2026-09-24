@@ -26,7 +26,7 @@ export default {
 
       if (!section || !title) {
         return Response.json(
-          { error: "Section and title are required." },
+          { error: "Section and thought are required." },
           { status: 400 }
         );
       }
@@ -47,7 +47,7 @@ export default {
       return Response.json(thought);
     }
 
-    // Get one thought and everything added to it
+    // Get one thought and its entries
     if (
       url.pathname.match(/^\/api\/thoughts\/\d+$/) &&
       request.method === "GET"
@@ -81,7 +81,41 @@ export default {
       });
     }
 
-    // Add another entry to an existing thought
+    // Edit the original thought
+    if (
+      url.pathname.match(/^\/api\/thoughts\/\d+$/) &&
+      request.method === "PATCH"
+    ) {
+      const id = url.pathname.split("/").pop();
+      const data = await request.json();
+
+      const title = data.title?.trim();
+
+      if (!title) {
+        return Response.json(
+          { error: "Thought cannot be empty." },
+          { status: 400 }
+        );
+      }
+
+      await env.DB.prepare(
+        `UPDATE thoughts
+         SET title = ?, updated_at = CURRENT_TIMESTAMP
+         WHERE id = ?`
+      )
+        .bind(title, id)
+        .run();
+
+      const thought = await env.DB.prepare(
+        `SELECT * FROM thoughts WHERE id = ?`
+      )
+        .bind(id)
+        .first();
+
+      return Response.json(thought);
+    }
+
+    // Add an entry to a thought
     if (
       url.pathname.match(/^\/api\/thoughts\/\d+\/entries$/) &&
       request.method === "POST"
@@ -136,7 +170,41 @@ export default {
       return Response.json(entry);
     }
 
-    // Delete a thought and its entries
+    // Edit an entry
+    if (
+      url.pathname.match(/^\/api\/entries\/\d+$/) &&
+      request.method === "PATCH"
+    ) {
+      const id = url.pathname.split("/").pop();
+      const data = await request.json();
+
+      const content = data.content?.trim();
+
+      if (!content) {
+        return Response.json(
+          { error: "Entry cannot be empty." },
+          { status: 400 }
+        );
+      }
+
+      await env.DB.prepare(
+        `UPDATE thought_entries
+         SET content = ?
+         WHERE id = ?`
+      )
+        .bind(content, id)
+        .run();
+
+      const entry = await env.DB.prepare(
+        `SELECT * FROM thought_entries WHERE id = ?`
+      )
+        .bind(id)
+        .first();
+
+      return Response.json(entry);
+    }
+
+    // Delete a thought and everything inside it
     if (
       url.pathname.match(/^\/api\/thoughts\/\d+$/) &&
       request.method === "DELETE"
