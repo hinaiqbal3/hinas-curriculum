@@ -516,6 +516,89 @@
     });
 
   </script>
+<div class="music-player">
+  <button class="music-button" id="musicButton" type="button" aria-label="Play music">
+    <span class="play-icon" id="musicIcon"></span>
+  </button>
+</div>
 
+<style>
+  .music-player {
+    position: fixed;
+    right: 30px;
+    bottom: 30px;
+    z-index: 100;
+  }
+
+  .music-button {
+    width: 54px;
+    height: 54px;
+    padding: 0;
+    border: 4px solid currentColor;
+    border-radius: 48% 52% 50% 46% / 51% 47% 53% 49%;
+    background: rgba(255, 255, 255, 0.12);
+    color: inherit;
+    cursor: pointer;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    transition:
+      transform 0.25s ease,
+      background 0.25s ease;
+  }
+
+  .music-button:hover {
+    transform: scale(1.06);
+    background: rgba(255, 255, 255, 0.25);
+  }
+
+  .play-icon {
+    width: 0;
+    height: 0;
+    margin-left: 3px;
+
+    border-top: 7px solid transparent;
+    border-bottom: 7px solid transparent;
+    border-left: 11px solid currentColor;
+  }
+
+  .music-button.playing .play-icon {
+    width: 11px;
+    height: 15px;
+    margin-left: 0;
+
+    border: 0;
+    border-left: 4px solid currentColor;
+    border-right: 4px solid currentColor;
+  }
+
+  @media (max-width: 720px) {
+    .music-player {
+      right: 20px;
+      bottom: 20px;
+    }
+
+    .music-button {
+      width: 48px;
+      height: 48px;
+      border-width: 3px;
+    }
+  }
+</style>
+
+<script>
+  const musicButton = document.getElementById("musicButton");
+
+  musicButton.addEventListener("click", () => {
+    const playing = musicButton.classList.toggle("playing");
+
+    musicButton.setAttribute(
+      "aria-label",
+      playing ? "Pause music" : "Play music"
+    );
+  });
+</script>
 </body>
 </html>
