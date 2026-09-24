@@ -598,10 +598,33 @@
   const musicButton = document.getElementById("musicButton");
   const siteMusic = document.getElementById("siteMusic");
 
+  const savedTime = parseFloat(localStorage.getItem("musicTime")) || 0;
+  const wasPlaying = localStorage.getItem("musicPlaying") === "true";
+
+  siteMusic.addEventListener("loadedmetadata", async () => {
+    if (savedTime < siteMusic.duration) {
+      siteMusic.currentTime = savedTime;
+    }
+
+    if (wasPlaying) {
+      try {
+        await siteMusic.play();
+        musicButton.classList.add("playing");
+        musicButton.setAttribute("aria-label", "Pause music");
+      } catch (error) {
+        // Browser blocked automatic playback.
+        // The next click will resume from the saved position.
+      }
+    }
+  });
+
   musicButton.addEventListener("click", async () => {
     if (siteMusic.paused) {
       try {
         await siteMusic.play();
+
+        localStorage.setItem("musicPlaying", "true");
+
         musicButton.classList.add("playing");
         musicButton.setAttribute("aria-label", "Pause music");
       } catch (error) {
@@ -609,9 +632,30 @@
       }
     } else {
       siteMusic.pause();
+
+      localStorage.setItem("musicPlaying", "false");
+      localStorage.setItem("musicTime", siteMusic.currentTime);
+
       musicButton.classList.remove("playing");
       musicButton.setAttribute("aria-label", "Play music");
     }
+  });
+
+  siteMusic.addEventListener("timeupdate", () => {
+    localStorage.setItem("musicTime", siteMusic.currentTime);
+  });
+
+  siteMusic.addEventListener("play", () => {
+    localStorage.setItem("musicPlaying", "true");
+  });
+
+  siteMusic.addEventListener("pause", () => {
+    localStorage.setItem("musicTime", siteMusic.currentTime);
+  });
+
+  window.addEventListener("pagehide", () => {
+    localStorage.setItem("musicTime", siteMusic.currentTime);
+    localStorage.setItem("musicPlaying", String(!siteMusic.paused));
   });
 </script>
 </body>
