@@ -18,14 +18,14 @@
     }
 
     button, input, textarea {
-      font-family: inherit;
+      font: inherit;
       font-weight: 300;
     }
 
     .page {
       width: min(1120px, calc(100% - 80px));
       margin: 0 auto;
-      padding: 55px 0 100px;
+      padding: 55px 0 120px;
     }
 
     .topline {
@@ -40,7 +40,7 @@
     .topline a {
       color: inherit;
       text-decoration: none;
-      opacity: .7;
+      opacity: .65;
     }
 
     h1 {
@@ -52,261 +52,315 @@
     }
 
     .intro {
-      max-width: 520px;
+      max-width: 530px;
       margin: 0;
       font-size: 16px;
-      line-height: 1.6;
-      opacity: .7;
+      line-height: 1.65;
+      opacity: .68;
     }
 
-    .input-area {
+    /* NEW THOUGHT */
+
+    .composer-wrap {
       margin-top: 75px;
+      display: flex;
+      justify-content: center;
     }
 
-    .thought-form {
+    .composer {
+      width: min(590px, 100%);
+      min-height: 135px;
+      padding: 28px 42px;
+      border: 1px solid rgba(40,101,140,.23);
+      border-radius: 50%;
       display: flex;
       align-items: center;
-      border-top: 1px solid rgba(40, 101, 140, .3);
-      border-bottom: 1px solid rgba(40, 101, 140, .3);
+      gap: 15px;
+      background: rgba(255,255,255,.08);
     }
 
-    .thought-form input {
+    .composer textarea {
       flex: 1;
+      min-height: 68px;
+      resize: none;
       border: 0;
       outline: 0;
       background: transparent;
-      color: #28658c;
-      padding: 22px 5px;
-      font-size: 20px;
+      color: inherit;
+      font-size: 21px;
+      line-height: 1.45;
+      text-align: center;
     }
 
-    .thought-form input::placeholder,
-    textarea::placeholder {
-      color: rgba(40, 101, 140, .45);
+    .composer textarea::placeholder,
+    .add-area textarea::placeholder {
+      color: rgba(40,101,140,.4);
     }
 
-    .thought-form button {
-      width: 55px;
-      height: 55px;
+    .composer button {
       border: 0;
       background: transparent;
-      color: #28658c;
-      font-size: 30px;
+      color: inherit;
+      font-size: 28px;
       cursor: pointer;
+      opacity: .65;
     }
 
     .status {
-      margin-top: 15px;
       min-height: 18px;
-      font-size: 12px;
-      opacity: .55;
+      margin-top: 13px;
+      text-align: center;
+      font-size: 11px;
+      opacity: .5;
     }
+
+    /* THOUGHT FIELD */
 
     .field {
       position: relative;
-      min-height: 650px;
-      margin-top: 50px;
+      min-height: 700px;
+      margin-top: 80px;
     }
 
     .bubble {
       position: absolute;
+      border: 1px solid rgba(40,101,140,.24);
+      background: rgba(255,255,255,.07);
+      color: inherit;
+      border-radius: 48% 52% 46% 54% / 55% 45% 55% 45%;
+      padding: 34px;
+      text-align: center;
+      cursor: pointer;
       display: flex;
       flex-direction: column;
       align-items: center;
       justify-content: center;
-      width: 205px;
-      min-height: 130px;
-      padding: 28px;
-      border: 1px solid rgba(40, 101, 140, .32);
-      border-radius: 50%;
-      background: transparent;
-      color: inherit;
-      text-align: center;
-      cursor: pointer;
-      transition: transform .25s ease, background .25s ease;
+      transition:
+        transform .3s ease,
+        background .3s ease,
+        border-radius .3s ease;
+    }
+
+    .bubble:nth-child(2n) {
+      border-radius: 54% 46% 53% 47% / 45% 56% 44% 55%;
+    }
+
+    .bubble:nth-child(3n) {
+      border-radius: 46% 54% 44% 56% / 53% 47% 55% 45%;
     }
 
     .bubble:hover {
-      transform: scale(1.04);
-      background: rgba(255, 255, 255, .22);
+      transform: scale(1.025);
+      background: rgba(255,255,255,.2);
     }
 
-    .bubble-title {
-      font-size: 16px;
-      line-height: 1.35;
+    .bubble-text {
+      font-size: 22px;
+      line-height: 1.42;
+      letter-spacing: -.018em;
     }
 
     .bubble-time {
-      margin-top: 10px;
+      margin-top: 16px;
       font-size: 9px;
-      line-height: 1.3;
-      letter-spacing: .08em;
       text-transform: uppercase;
-      opacity: .5;
+      letter-spacing: .1em;
+      opacity: .42;
     }
 
     .empty {
+      text-align: center;
       font-size: 13px;
-      letter-spacing: .05em;
-      opacity: .45;
+      opacity: .4;
     }
 
-    /* OPEN THOUGHT */
+    /* EXPANDED THOUGHT */
 
     .overlay {
       display: none;
       position: fixed;
       inset: 0;
-      z-index: 20;
+      z-index: 50;
       overflow-y: auto;
-      background: rgba(230, 243, 251, .97);
+      background: rgba(230,243,251,.985);
     }
 
     .overlay.open {
       display: block;
     }
 
-    .thought-panel {
-      width: min(760px, calc(100% - 40px));
-      margin: 0 auto;
-      padding: 65px 0 100px;
+    .expanded {
+      width: min(790px, calc(100% - 40px));
+      margin: 55px auto 100px;
+      min-height: 620px;
+      padding: 65px 75px;
+      border: 1px solid rgba(40,101,140,.2);
+      border-radius: 12% 9% 11% 8% / 8% 12% 9% 11%;
+      position: relative;
     }
 
-    .panel-top {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      border-bottom: 1px solid rgba(40, 101, 140, .25);
-      padding-bottom: 18px;
-    }
-
-    .panel-label {
-      font-size: 10px;
-      text-transform: uppercase;
-      letter-spacing: .16em;
-      opacity: .55;
-    }
-
-    .close-button {
+    .close {
+      position: absolute;
+      top: 28px;
+      right: 34px;
       border: 0;
       background: transparent;
       color: inherit;
-      padding: 8px 0 8px 20px;
-      font-size: 12px;
       cursor: pointer;
-      opacity: .65;
+      font-size: 12px;
+      opacity: .55;
     }
 
-    .open-title {
-      margin: 70px 0 12px;
-      font-size: clamp(40px, 7vw, 72px);
-      line-height: .95;
-      font-weight: 300;
-      letter-spacing: -.05em;
+    .original {
+      margin-top: 30px;
     }
 
-    .created-time {
+    .original-text {
+      font-size: clamp(29px, 4.5vw, 45px);
+      line-height: 1.25;
+      letter-spacing: -.035em;
+      white-space: pre-wrap;
+    }
+
+    .timestamp {
+      margin-top: 17px;
+      font-size: 9px;
+      text-transform: uppercase;
+      letter-spacing: .11em;
+      opacity: .42;
+    }
+
+    .tiny-action {
+      border: 0;
+      background: transparent;
+      color: inherit;
+      padding: 0;
+      margin-top: 12px;
       font-size: 10px;
       text-transform: uppercase;
-      letter-spacing: .12em;
-      opacity: .5;
+      letter-spacing: .1em;
+      cursor: pointer;
+      opacity: .42;
     }
+
+    .tiny-action:hover {
+      opacity: .9;
+    }
+
+    /* EDITING */
+
+    .edit-box {
+      width: 100%;
+      min-height: 120px;
+      border: 0;
+      outline: 0;
+      resize: vertical;
+      background: rgba(255,255,255,.16);
+      color: inherit;
+      padding: 18px 20px;
+      border-radius: 30px;
+      font-size: 18px;
+      line-height: 1.55;
+    }
+
+    .edit-original {
+      font-size: 27px;
+      min-height: 160px;
+    }
+
+    .edit-actions {
+      display: flex;
+      gap: 18px;
+      margin-top: 12px;
+    }
+
+    /* LATER ENTRIES */
 
     .entries {
       margin-top: 65px;
     }
 
     .entry {
-      padding: 25px 0;
-      border-top: 1px solid rgba(40, 101, 140, .2);
+      margin: 0 0 48px 0;
+      max-width: 610px;
     }
 
-    .entry-content {
-      white-space: pre-wrap;
-      font-size: 17px;
+    .entry:nth-child(even) {
+      margin-left: 7%;
+    }
+
+    .entry-text {
+      font-size: 19px;
       line-height: 1.7;
+      white-space: pre-wrap;
     }
 
-    .entry-time {
-      margin-top: 15px;
-      font-size: 9px;
-      text-transform: uppercase;
-      letter-spacing: .1em;
-      opacity: .45;
+    /* ADD MORE */
+
+    .add-area {
+      margin: 65px auto 0;
+      width: min(560px, 100%);
+      padding: 30px 38px;
+      border: 1px solid rgba(40,101,140,.2);
+      border-radius: 48% 52% 50% 50% / 52% 47% 53% 48%;
     }
 
-    .no-entries {
-      padding: 25px 0;
-      border-top: 1px solid rgba(40, 101, 140, .2);
-      font-size: 13px;
-      opacity: .45;
-    }
-
-    .add-entry {
-      margin-top: 45px;
-      border-top: 1px solid rgba(40, 101, 140, .3);
-      border-bottom: 1px solid rgba(40, 101, 140, .3);
-    }
-
-    .add-entry textarea {
-      display: block;
+    .add-area textarea {
       width: 100%;
-      min-height: 125px;
+      min-height: 95px;
       resize: vertical;
       border: 0;
       outline: 0;
       background: transparent;
       color: inherit;
-      padding: 22px 4px;
-      font-size: 16px;
+      font-size: 17px;
       line-height: 1.6;
+      text-align: center;
     }
 
-    .entry-actions {
+    .add-row {
       display: flex;
-      justify-content: flex-end;
-      padding: 0 0 15px;
+      justify-content: center;
+      margin-top: 8px;
     }
 
-    .add-button {
+    .add-row button {
       border: 0;
       background: transparent;
       color: inherit;
-      font-size: 12px;
+      font-size: 11px;
       text-transform: uppercase;
-      letter-spacing: .12em;
+      letter-spacing: .11em;
       cursor: pointer;
+      opacity: .55;
     }
 
     .panel-status {
       min-height: 18px;
       margin-top: 12px;
+      text-align: center;
       font-size: 11px;
       opacity: .5;
     }
 
-    .bottom-actions {
-      display: flex;
-      justify-content: space-between;
-      margin-top: 70px;
-      padding-top: 18px;
-      border-top: 1px solid rgba(40, 101, 140, .2);
+    .delete-wrap {
+      margin-top: 75px;
+      text-align: center;
     }
 
-    .bottom-actions button {
+    .delete {
       border: 0;
       background: transparent;
       color: inherit;
-      padding: 8px 0;
-      font-size: 10px;
+      font-size: 9px;
       text-transform: uppercase;
-      letter-spacing: .13em;
+      letter-spacing: .12em;
       cursor: pointer;
-      opacity: .55;
+      opacity: .3;
     }
 
-    .bottom-actions button:hover {
-      opacity: 1;
+    .delete:hover {
+      opacity: .8;
     }
 
     @media (max-width: 720px) {
@@ -319,14 +373,23 @@
         margin-top: 75px;
       }
 
-      .input-area {
+      .composer-wrap {
         margin-top: 55px;
+      }
+
+      .composer {
+        padding: 25px 28px;
+      }
+
+      .composer textarea {
+        font-size: 18px;
       }
 
       .field {
         display: flex;
-        flex-wrap: wrap;
-        gap: 18px;
+        flex-direction: column;
+        align-items: center;
+        gap: 28px;
         min-height: 400px;
       }
 
@@ -334,21 +397,22 @@
         position: relative;
         left: auto !important;
         top: auto !important;
-        width: 150px;
-        min-height: 105px;
-        padding: 20px;
+        width: min(92%, 380px) !important;
+        min-height: 150px !important;
       }
 
-      .bubble-title {
-        font-size: 14px;
+      .bubble-text {
+        font-size: 20px;
       }
 
-      .thought-panel {
-        padding-top: 35px;
+      .expanded {
+        margin-top: 20px;
+        padding: 60px 28px;
+        border-radius: 45px;
       }
 
-      .open-title {
-        margin-top: 55px;
+      .entry:nth-child(even) {
+        margin-left: 0;
       }
     }
   </style>
@@ -357,7 +421,6 @@
 <body>
 
   <main class="page">
-
     <div class="topline">
       <a href="index.html">← The Index</a>
       <span>Hina's Curriculum</span>
@@ -370,66 +433,52 @@
       that feel worth keeping.
     </p>
 
-    <section class="input-area">
-      <form class="thought-form" id="thoughtForm">
-
-        <input
+    <div class="composer-wrap">
+      <form class="composer" id="thoughtForm">
+        <textarea
           id="thoughtInput"
-          type="text"
           placeholder="add something worth keeping..."
-          autocomplete="off"
-          maxlength="180"
-        >
-
+          maxlength="500"
+        ></textarea>
         <button type="submit" aria-label="Add thought">+</button>
-
       </form>
+    </div>
 
-      <div class="status" id="status"></div>
-    </section>
+    <div class="status" id="status"></div>
 
     <section class="field" id="field"></section>
-
   </main>
 
 
   <div class="overlay" id="overlay">
+    <article class="expanded">
 
-    <div class="thought-panel">
+      <button class="close" id="closeButton">close ×</button>
 
-      <div class="panel-top">
-        <span class="panel-label">Commonplace</span>
-        <button class="close-button" id="closeButton">close ×</button>
-      </div>
+      <section class="original" id="original"></section>
 
-      <h2 class="open-title" id="openTitle"></h2>
+      <section class="entries" id="entries"></section>
 
-      <div class="created-time" id="createdTime"></div>
-
-      <div class="entries" id="entries"></div>
-
-      <form class="add-entry" id="entryForm">
-
+      <form class="add-area" id="entryForm">
         <textarea
           id="entryInput"
           placeholder="add to this thought..."
         ></textarea>
 
-        <div class="entry-actions">
-          <button class="add-button" type="submit">add entry +</button>
+        <div class="add-row">
+          <button type="submit">add +</button>
         </div>
-
       </form>
 
       <div class="panel-status" id="panelStatus"></div>
 
-      <div class="bottom-actions">
-        <button id="deleteButton" type="button">delete thought</button>
-        <button id="bottomCloseButton" type="button">close</button>
+      <div class="delete-wrap">
+        <button class="delete" id="deleteButton" type="button">
+          delete thought
+        </button>
       </div>
 
-    </div>
-
+    </article>
   </div>
 
 
@@ -442,8 +491,7 @@
     const status = document.getElementById("status");
 
     const overlay = document.getElementById("overlay");
-    const openTitle = document.getElementById("openTitle");
-    const createdTime = document.getElementById("createdTime");
+    const original = document.getElementById("original");
     const entries = document.getElementById("entries");
 
     const entryForm = document.getElementById("entryForm");
@@ -451,44 +499,73 @@
     const panelStatus = document.getElementById("panelStatus");
 
     const closeButton = document.getElementById("closeButton");
-    const bottomCloseButton = document.getElementById("bottomCloseButton");
     const deleteButton = document.getElementById("deleteButton");
 
     let currentThoughtId = null;
 
 
-    function formatDate(dateString) {
-      if (!dateString) return "";
+    function formatDate(value) {
+      if (!value) return "";
 
-      const utcString = dateString.includes("T")
-        ? dateString
-        : dateString.replace(" ", "T") + "Z";
+      const utc = value.includes("T")
+        ? value
+        : value.replace(" ", "T") + "Z";
 
-      const date = new Date(utcString);
+      const date = new Date(utc);
 
-      return new Intl.DateTimeFormat("en-US", {
+      const datePart = date.toLocaleDateString(undefined, {
         month: "short",
         day: "numeric",
-        year: "numeric",
+        year: "numeric"
+      });
+
+      const timePart = date.toLocaleTimeString(undefined, {
         hour: "numeric",
         minute: "2-digit"
-      }).format(date);
+      });
+
+      return `${datePart} · ${timePart}`;
+    }
+
+
+    function bubbleSize(text) {
+      const length = text.length;
+
+      if (length < 55) {
+        return { width: 230, height: 155 };
+      }
+
+      if (length < 120) {
+        return { width: 300, height: 190 };
+      }
+
+      if (length < 220) {
+        return { width: 350, height: 225 };
+      }
+
+      return { width: 390, height: 255 };
     }
 
 
     function positionFor(index) {
       const positions = [
-        [3, 5],
-        [37, 30],
-        [70, 2],
-        [16, 190],
-        [55, 215],
-        [76, 365],
-        [1, 405],
-        [35, 450]
+        [1, 10],
+        [38, 55],
+        [70, 5],
+        [13, 275],
+        [53, 325],
+        [2, 535],
+        [65, 570],
+        [31, 760]
       ];
 
-      return positions[index % positions.length];
+      const base = positions[index % positions.length];
+      const cycle = Math.floor(index / positions.length);
+
+      return [
+        base[0],
+        base[1] + cycle * 900
+      ];
     }
 
 
@@ -496,31 +573,38 @@
       field.innerHTML = "";
 
       if (!thoughts.length) {
-        field.innerHTML =
-          '<div class="empty">your commonplace is waiting for its first thought.</div>';
+        const empty = document.createElement("div");
+        empty.className = "empty";
+        empty.textContent =
+          "your commonplace is waiting for its first thought.";
+        field.appendChild(empty);
         return;
       }
 
+      let greatestBottom = 700;
+
       thoughts.forEach((thought, index) => {
-
         const bubble = document.createElement("button");
-        const position = positionFor(index);
-
-        bubble.className = "bubble";
         bubble.type = "button";
+        bubble.className = "bubble";
+
+        const position = positionFor(index);
+        const size = bubbleSize(thought.title);
 
         bubble.style.left = position[0] + "%";
         bubble.style.top = position[1] + "px";
+        bubble.style.width = size.width + "px";
+        bubble.style.minHeight = size.height + "px";
 
-        const title = document.createElement("div");
-        title.className = "bubble-title";
-        title.textContent = thought.title;
+        const text = document.createElement("div");
+        text.className = "bubble-text";
+        text.textContent = thought.title;
 
         const time = document.createElement("div");
         time.className = "bubble-time";
         time.textContent = formatDate(thought.created_at);
 
-        bubble.appendChild(title);
+        bubble.appendChild(text);
         bubble.appendChild(time);
 
         bubble.addEventListener("click", () => {
@@ -528,7 +612,14 @@
         });
 
         field.appendChild(bubble);
+
+        greatestBottom = Math.max(
+          greatestBottom,
+          position[1] + size.height + 80
+        );
       });
+
+      field.style.minHeight = greatestBottom + "px";
     }
 
 
@@ -560,10 +651,7 @@
 
         const thought = await response.json();
 
-        openTitle.textContent = thought.title;
-        createdTime.textContent =
-          "created " + formatDate(thought.created_at);
-
+        drawOriginal(thought);
         drawEntries(thought.entries);
 
         overlay.classList.add("open");
@@ -575,33 +663,187 @@
     }
 
 
+    function drawOriginal(thought) {
+      original.innerHTML = "";
+
+      const text = document.createElement("div");
+      text.className = "original-text";
+      text.textContent = thought.title;
+
+      const time = document.createElement("div");
+      time.className = "timestamp";
+      time.textContent = formatDate(thought.created_at);
+
+      const edit = document.createElement("button");
+      edit.type = "button";
+      edit.className = "tiny-action";
+      edit.textContent = "edit";
+
+      edit.addEventListener("click", () => {
+        showOriginalEditor(thought);
+      });
+
+      original.appendChild(text);
+      original.appendChild(time);
+      original.appendChild(edit);
+    }
+
+
+    function showOriginalEditor(thought) {
+      original.innerHTML = "";
+
+      const textarea = document.createElement("textarea");
+      textarea.className = "edit-box edit-original";
+      textarea.value = thought.title;
+
+      const actions = document.createElement("div");
+      actions.className = "edit-actions";
+
+      const save = document.createElement("button");
+      save.type = "button";
+      save.className = "tiny-action";
+      save.textContent = "save";
+
+      const cancel = document.createElement("button");
+      cancel.type = "button";
+      cancel.className = "tiny-action";
+      cancel.textContent = "cancel";
+
+      save.addEventListener("click", async () => {
+        const title = textarea.value.trim();
+        if (!title) return;
+
+        panelStatus.textContent = "saving...";
+
+        try {
+          const response = await fetch(
+            "/api/thoughts/" + thought.id,
+            {
+              method: "PATCH",
+              headers: {
+                "Content-Type": "application/json"
+              },
+              body: JSON.stringify({ title })
+            }
+          );
+
+          if (!response.ok) throw new Error();
+
+          panelStatus.textContent = "";
+          await openThought(thought.id);
+          await loadThoughts();
+
+        } catch {
+          panelStatus.textContent = "couldn't save that edit.";
+        }
+      });
+
+      cancel.addEventListener("click", () => {
+        drawOriginal(thought);
+      });
+
+      actions.appendChild(save);
+      actions.appendChild(cancel);
+
+      original.appendChild(textarea);
+      original.appendChild(actions);
+
+      textarea.focus();
+    }
+
+
     function drawEntries(thoughtEntries) {
       entries.innerHTML = "";
 
-      if (!thoughtEntries.length) {
-        entries.innerHTML =
-          '<div class="no-entries">nothing added to this thought yet.</div>';
-        return;
-      }
-
       thoughtEntries.forEach(entry => {
-
-        const wrapper = document.createElement("div");
+        const wrapper = document.createElement("article");
         wrapper.className = "entry";
 
-        const content = document.createElement("div");
-        content.className = "entry-content";
-        content.textContent = entry.content;
+        const text = document.createElement("div");
+        text.className = "entry-text";
+        text.textContent = entry.content;
 
         const time = document.createElement("div");
-        time.className = "entry-time";
+        time.className = "timestamp";
         time.textContent = formatDate(entry.created_at);
 
-        wrapper.appendChild(content);
+        const edit = document.createElement("button");
+        edit.type = "button";
+        edit.className = "tiny-action";
+        edit.textContent = "edit";
+
+        edit.addEventListener("click", () => {
+          showEntryEditor(wrapper, entry);
+        });
+
+        wrapper.appendChild(text);
         wrapper.appendChild(time);
+        wrapper.appendChild(edit);
 
         entries.appendChild(wrapper);
       });
+    }
+
+
+    function showEntryEditor(wrapper, entry) {
+      wrapper.innerHTML = "";
+
+      const textarea = document.createElement("textarea");
+      textarea.className = "edit-box";
+      textarea.value = entry.content;
+
+      const actions = document.createElement("div");
+      actions.className = "edit-actions";
+
+      const save = document.createElement("button");
+      save.type = "button";
+      save.className = "tiny-action";
+      save.textContent = "save";
+
+      const cancel = document.createElement("button");
+      cancel.type = "button";
+      cancel.className = "tiny-action";
+      cancel.textContent = "cancel";
+
+      save.addEventListener("click", async () => {
+        const content = textarea.value.trim();
+        if (!content) return;
+
+        panelStatus.textContent = "saving...";
+
+        try {
+          const response = await fetch(
+            "/api/entries/" + entry.id,
+            {
+              method: "PATCH",
+              headers: {
+                "Content-Type": "application/json"
+              },
+              body: JSON.stringify({ content })
+            }
+          );
+
+          if (!response.ok) throw new Error();
+
+          panelStatus.textContent = "";
+          await openThought(currentThoughtId);
+
+        } catch {
+          panelStatus.textContent = "couldn't save that edit.";
+        }
+      });
+
+      cancel.addEventListener("click", () => {
+        openThought(currentThoughtId);
+      });
+
+      actions.appendChild(save);
+      actions.appendChild(cancel);
+
+      wrapper.appendChild(textarea);
+      wrapper.appendChild(actions);
+
+      textarea.focus();
     }
 
 
@@ -614,11 +856,10 @@
     }
 
 
-    form.addEventListener("submit", async (event) => {
+    form.addEventListener("submit", async event => {
       event.preventDefault();
 
       const title = input.value.trim();
-
       if (!title) return;
 
       status.textContent = "adding...";
@@ -648,7 +889,7 @@
     });
 
 
-    entryForm.addEventListener("submit", async (event) => {
+    entryForm.addEventListener("submit", async event => {
       event.preventDefault();
 
       const content = entryInput.value.trim();
@@ -677,7 +918,7 @@
         await openThought(currentThoughtId);
 
       } catch {
-        panelStatus.textContent = "couldn't add that entry.";
+        panelStatus.textContent = "couldn't add that.";
       }
     });
 
@@ -690,8 +931,6 @@
       );
 
       if (!confirmed) return;
-
-      panelStatus.textContent = "deleting...";
 
       try {
         const response = await fetch(
@@ -711,11 +950,18 @@
 
 
     closeButton.addEventListener("click", closeThought);
-    bottomCloseButton.addEventListener("click", closeThought);
 
+    overlay.addEventListener("click", event => {
+      if (event.target === overlay) {
+        closeThought();
+      }
+    });
 
-    document.addEventListener("keydown", (event) => {
-      if (event.key === "Escape" && overlay.classList.contains("open")) {
+    document.addEventListener("keydown", event => {
+      if (
+        event.key === "Escape" &&
+        overlay.classList.contains("open")
+      ) {
         closeThought();
       }
     });
