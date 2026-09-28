@@ -468,6 +468,49 @@
 
     .connection-chip button:hover { opacity: .9; }
 
+
+    /* Overview mode: zooms out the whole concept map without changing bubbles */
+    .overview-stage {
+      margin-top: 80px;
+      position: relative;
+      width: 100%;
+    }
+
+    .overview-stage .field {
+      margin-top: 0;
+      transform-origin: top left;
+    }
+
+    .overview-stage.overview-active {
+      overflow: hidden;
+      min-height: 420px;
+    }
+
+    .overview-toggle-wrap {
+      display: flex;
+      justify-content: center;
+      margin-top: 44px;
+    }
+
+    .overview-toggle {
+      border: 1.5px solid rgba(118,84,150,.30);
+      background: rgba(255,255,255,.08);
+      color: inherit;
+      border-radius: 999px;
+      padding: 11px 18px;
+      font-size: 10px;
+      text-transform: uppercase;
+      letter-spacing: .12em;
+      cursor: pointer;
+      opacity: .68;
+    }
+
+    .overview-toggle:hover,
+    .overview-toggle.active {
+      opacity: 1;
+      background: rgba(255,255,255,.28);
+    }
+
     @media (max-width: 720px) {
       .map-tools { margin-top: 28px; }
       .map-tool { padding: 9px 13px; }
@@ -559,7 +602,13 @@
       <div class="map-hint" id="mapHint">drag a thought to move it · click to open it</div>
     </div>
 
-    <section class="field" id="field"></section>
+    <div class="overview-stage" id="overviewStage">
+      <section class="field" id="field"></section>
+    </div>
+
+    <div class="overview-toggle-wrap">
+      <button class="overview-toggle" id="overviewToggle" type="button">overview</button>
+    </div>
 
   </main>
 
@@ -624,6 +673,8 @@
     const connectModeButton = document.getElementById("connectModeButton");
     const resetMapButton = document.getElementById("resetMapButton");
     const mapHint = document.getElementById("mapHint");
+    const overviewStage = document.getElementById("overviewStage");
+    const overviewToggle = document.getElementById("overviewToggle");
 
     let currentThoughtId = null;
     let thoughtsCache = [];
@@ -632,6 +683,8 @@
     let connectMode = false;
     let connectSourceId = null;
     let dragState = null;
+    let overviewMode = false;
+    let overviewScale = 1;
 
     function formatDate(value) {
       if (!value) return "";
@@ -747,6 +800,67 @@
       drawConnections();
     }
 
+
+    function mapBounds() {
+      const bubbles = [...field.querySelectorAll(".bubble")];
+      if (!bubbles.length) return { width: field.clientWidth, height: 520 };
+
+      let maxRight = field.clientWidth;
+      let maxBottom = 520;
+
+      bubbles.forEach(bubble => {
+        maxRight = Math.max(maxRight, bubble.offsetLeft + bubble.offsetWidth + 40);
+        maxBottom = Math.max(maxBottom, bubble.offsetTop + bubble.offsetHeight + 40);
+      });
+
+      return { width: maxRight, height: maxBottom };
+    }
+
+    function applyOverview() {
+      if (!overviewMode || window.innerWidth <= 720) {
+        overviewScale = 1;
+        field.style.transform = "";
+        field.style.width = "";
+        overviewStage.style.height = "";
+        overviewStage.classList.remove("overview-active");
+        overviewToggle.classList.remove("active");
+        overviewToggle.textContent = "overview";
+        drawConnections();
+        return;
+      }
+
+      const bounds = mapBounds();
+      const availableWidth = overviewStage.clientWidth;
+      const targetHeight = Math.min(700, Math.max(500, window.innerHeight * 0.68));
+
+      overviewScale = Math.min(
+        1,
+        availableWidth / bounds.width,
+        targetHeight / bounds.height
+      );
+
+      overviewScale = Math.max(0.18, overviewScale * 0.96);
+
+      field.style.width = bounds.width + "px";
+      field.style.transform = `scale(${overviewScale})`;
+      overviewStage.style.height = Math.max(420, bounds.height * overviewScale) + "px";
+      overviewStage.classList.add("overview-active");
+      overviewToggle.classList.add("active");
+      overviewToggle.textContent = "normal view";
+      drawConnections();
+    }
+
+    function setOverview(on) {
+      overviewMode = on && window.innerWidth > 720;
+      applyOverview();
+
+      mapHint.textContent = overviewMode
+        ? "overview · drag and connect while seeing the whole constellation"
+        : connectMode
+          ? "click one thought, then another · click “connecting…” to cancel"
+          : "drag a thought to move it · click to open it";
+    }
+
     function setConnectMode(on) {
       connectMode = on;
       connectSourceId = null;
@@ -821,8 +935,9 @@
       bubble.addEventListener("pointermove", event => {
         if (!dragState || dragState.bubble !== bubble) return;
 
-        const dx = event.clientX - dragState.startX;
-        const dy = event.clientY - dragState.startY;
+        const scale = overviewMode ? overviewScale : 1;
+        const dx = (event.clientX - dragState.startX) / scale;
+        const dy = (event.clientY - dragState.startY) / scale;
 
         if (!dragState.moved && Math.hypot(dx, dy) < 5) return;
 
@@ -1308,6 +1423,10 @@
       status.textContent = "";
     });
 
+    overviewToggle.addEventListener("click", () => {
+      setOverview(!overviewMode);
+    });
+
     closeButton.addEventListener("click", closeThought);
 
     overlay.addEventListener("click", event => {
@@ -1325,7 +1444,9 @@
     });
 
     window.addEventListener("resize", () => {
+      if (window.innerWidth <= 720 && overviewMode) overviewMode = false;
       drawThoughts(thoughtsCache);
+      requestAnimationFrame(applyOverview);
     });
 
     loadThoughts();
