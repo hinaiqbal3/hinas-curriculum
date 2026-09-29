@@ -474,16 +474,26 @@
       margin-top: 80px;
       position: relative;
       width: 100%;
+      height: 72vh;
+      min-height: 560px;
+      overflow: auto;
+      overscroll-behavior: contain;
+      scrollbar-gutter: stable;
+      border-top: 1px solid rgba(118,84,150,.16);
+      border-bottom: 1px solid rgba(118,84,150,.16);
     }
 
     .overview-stage .field {
       margin-top: 0;
       transform-origin: top left;
+      width: 1800px;
+      min-width: 1800px;
+      min-height: 1200px;
     }
 
     .overview-stage.overview-active {
-      overflow: hidden;
-      min-height: 420px;
+      overflow: auto;
+      min-height: 560px;
     }
 
     .overview-toggle-wrap {
@@ -512,6 +522,21 @@
     }
 
     @media (max-width: 720px) {
+      .overview-stage {
+        height: auto;
+        min-height: 0;
+        overflow: visible;
+        border-top: 0;
+        border-bottom: 0;
+      }
+      .overview-stage .field {
+        width: 100% !important;
+        min-width: 0 !important;
+        min-height: 0;
+        transform: none !important;
+      }
+      .overview-toggle-wrap { display: none; }
+
       .map-tools { margin-top: 28px; }
       .map-tool { padding: 9px 13px; }
       .connection-layer { display: none; }
@@ -803,47 +828,44 @@
 
     function mapBounds() {
       const bubbles = [...field.querySelectorAll(".bubble")];
-      if (!bubbles.length) return { width: field.clientWidth, height: 520 };
-
-      let maxRight = field.clientWidth;
-      let maxBottom = 520;
-
+      let maxRight = 1800;
+      let maxBottom = 1200;
       bubbles.forEach(bubble => {
-        maxRight = Math.max(maxRight, bubble.offsetLeft + bubble.offsetWidth + 40);
-        maxBottom = Math.max(maxBottom, bubble.offsetTop + bubble.offsetHeight + 40);
+        maxRight = Math.max(maxRight, bubble.offsetLeft + bubble.offsetWidth + 300);
+        maxBottom = Math.max(maxBottom, bubble.offsetTop + bubble.offsetHeight + 300);
       });
-
       return { width: maxRight, height: maxBottom };
     }
 
+    function ensureCanvasSpace() {
+      const bounds = mapBounds();
+      const width = Math.max(1800, parseFloat(field.style.width) || 0, bounds.width);
+      const height = Math.max(1200, parseFloat(field.style.minHeight) || 0, bounds.height);
+      field.style.width = width + "px";
+      field.style.minWidth = width + "px";
+      field.style.minHeight = height + "px";
+    }
+
     function applyOverview() {
+      ensureCanvasSpace();
       if (!overviewMode || window.innerWidth <= 720) {
         overviewScale = 1;
         field.style.transform = "";
-        field.style.width = "";
-        overviewStage.style.height = "";
         overviewStage.classList.remove("overview-active");
         overviewToggle.classList.remove("active");
         overviewToggle.textContent = "overview";
         drawConnections();
         return;
       }
-
       const bounds = mapBounds();
-      const availableWidth = overviewStage.clientWidth;
-      const targetHeight = Math.min(700, Math.max(500, window.innerHeight * 0.68));
-
-      overviewScale = Math.min(
-        1,
-        availableWidth / bounds.width,
-        targetHeight / bounds.height
-      );
-
-      overviewScale = Math.max(0.18, overviewScale * 0.96);
-
+      const availableWidth = Math.max(320, overviewStage.clientWidth - 20);
+      const availableHeight = Math.max(420, overviewStage.clientHeight - 20);
+      overviewScale = Math.min(1, availableWidth / bounds.width, availableHeight / bounds.height);
+      overviewScale = Math.max(0.16, overviewScale * 0.96);
       field.style.width = bounds.width + "px";
+      field.style.minWidth = field.style.width;
+      field.style.minHeight = bounds.height + "px";
       field.style.transform = `scale(${overviewScale})`;
-      overviewStage.style.height = Math.max(420, bounds.height * overviewScale) + "px";
       overviewStage.classList.add("overview-active");
       overviewToggle.classList.add("active");
       overviewToggle.textContent = "normal view";
@@ -944,13 +966,27 @@
         dragState.moved = true;
         bubble.classList.add("dragging");
 
-        const maxX = Math.max(0, field.clientWidth - bubble.offsetWidth);
-        const nextX = Math.min(maxX, Math.max(0, dragState.originalLeft + dx));
+        const nextX = Math.max(0, dragState.originalLeft + dx);
         const nextY = Math.max(0, dragState.originalTop + dy);
 
         bubble.style.left = nextX + "px";
         bubble.style.top = nextY + "px";
+
+        const rightEdge = nextX + bubble.offsetWidth;
+        const bottomEdge = nextY + bubble.offsetHeight;
+        const currentWidth = parseFloat(field.style.width) || field.offsetWidth;
+        const currentHeight = parseFloat(field.style.minHeight) || field.offsetHeight;
+
+        if (rightEdge > currentWidth - 260) {
+          field.style.width = Math.max(1800, rightEdge + 500) + "px";
+          field.style.minWidth = field.style.width;
+        }
+        if (bottomEdge > currentHeight - 260) {
+          field.style.minHeight = Math.max(1200, bottomEdge + 500) + "px";
+        }
+
         updateFieldHeight();
+        drawConnections();
       });
 
       const finishDrag = async event => {
