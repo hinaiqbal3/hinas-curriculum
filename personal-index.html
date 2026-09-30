@@ -4,189 +4,1791 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Index — Hina's Curriculum</title>
+
 <style>
-:root{--bg:#f3e5e7;--text:#805b63;--soft:#9c7b82;--line:rgba(128,91,99,.23)}
-*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--text);font-family:"Helvetica Neue",Helvetica,Arial,sans-serif;font-weight:300}
-button,input,textarea,select{font:inherit;color:inherit}.page{width:min(1120px,calc(100% - 80px));margin:auto;padding:58px 0 110px}
-.topline{display:flex;justify-content:space-between;font-size:11px;text-transform:uppercase;letter-spacing:.15em;color:var(--soft)}
-.topline a{color:inherit;text-decoration:none}header{padding:72px 0 48px}h1{margin:0;font-size:clamp(65px,10vw,122px);line-height:.9;font-weight:300;letter-spacing:-.065em}
-.intro{margin:30px 0 0;max-width:690px;color:var(--soft);font-size:17px;line-height:1.65}
-.search-wrap{border-top:1px solid var(--line);border-bottom:1px solid var(--line);padding:20px 0}
-.search{width:100%;border:0;outline:0;background:transparent;font-size:23px;font-weight:300}.search::placeholder{color:rgba(98,91,79,.42)}
-.search-status{margin-top:8px;font-size:10px;text-transform:uppercase;letter-spacing:.11em;color:var(--soft)}
-.composer{padding:30px 0 34px}.label{font-size:10px;text-transform:uppercase;letter-spacing:.13em;color:var(--soft);margin-bottom:10px}
-.new-title{width:100%;border:0;border-bottom:1px solid var(--line);outline:0;background:transparent;padding:5px 0 13px;font-size:25px}
-.actions{display:flex;gap:10px;flex-wrap:wrap;margin-top:12px}.actions .danger{margin-left:auto;opacity:.65}
-.btn{border:1px solid var(--line);background:transparent;border-radius:999px;padding:9px 15px;cursor:pointer;font-size:10px;text-transform:uppercase;letter-spacing:.11em}
-.btn:hover{background:rgba(255,255,255,.3)}.list{border-bottom:1px solid var(--line)}.item{border-top:1px solid var(--line)}
-.row{width:100%;border:0;background:transparent;cursor:pointer;display:grid;grid-template-columns:55px minmax(0,1fr) auto;gap:20px;align-items:center;text-align:left;padding:25px 0}
-.num,.meta{font-size:10px;text-transform:uppercase;letter-spacing:.1em;color:var(--soft)}.title{font-size:clamp(25px,3.3vw,39px);letter-spacing:-.035em;line-height:1.08}
-.plus{font-size:21px;min-width:18px;text-align:center}.drawer{display:none;padding:4px 0 46px 75px}.item.open .drawer{display:block}
-.archive-entries{padding:4px 0 22px}
-.archive-heading{font-size:10px;text-transform:uppercase;letter-spacing:.13em;color:var(--soft);margin:6px 0 8px}
-.entry{border-top:1px solid var(--line);padding:28px 4px}.entry:first-of-type{border-top:1px solid var(--line)}
-.entry-date{font-size:11px;text-transform:uppercase;letter-spacing:.11em;color:var(--soft);margin-bottom:12px}
-.entry-text{white-space:pre-wrap;overflow-wrap:anywhere;font-size:16px;line-height:1.82}.entry-tools{margin-top:14px;display:flex;gap:8px}
-.entry-tools button{border:0;background:transparent;padding:0;cursor:pointer;font-size:10px;text-transform:uppercase;letter-spacing:.1em;color:var(--soft)}
-.editor{margin-top:18px;padding:30px 30px 32px;background:rgba(255,255,255,.30);border:1px solid rgba(128,91,99,.16);border-radius:2px}
-.editor-heading{font-size:12px;text-transform:uppercase;letter-spacing:.15em;color:var(--text);margin-bottom:7px}
-.editor-note{font-size:13px;line-height:1.55;color:var(--soft);margin-bottom:25px}
-.field-label{display:block;font-size:9px;text-transform:uppercase;letter-spacing:.12em;color:var(--soft);margin-bottom:5px}
-.date-fields{display:grid;grid-template-columns:1fr 1fr;gap:22px;margin-bottom:22px}
-.date-fields input,.date-fields select{width:100%;border:0;border-bottom:1px solid var(--line);background:transparent;outline:0;padding:10px 0;font-size:14px}
-.type-picker{margin:18px 0 16px}.type-options{display:flex;flex-wrap:wrap;gap:12px 22px;align-items:center}.type-option{display:flex;align-items:center;gap:8px;font-size:14px;color:var(--soft)}.custom-type{display:flex;align-items:center;gap:8px;min-width:260px;flex:1}.custom-type input[type="text"]{width:100%;border:0;border-bottom:1px solid var(--line);background:transparent;outline:0;padding:7px 0}.entry-tags{font-size:10px;text-transform:uppercase;letter-spacing:.11em;color:var(--soft);margin:-5px 0 14px}
-.textbox{width:100%;min-height:360px;resize:vertical;border:1px solid rgba(128,91,99,.25);background:rgba(255,255,255,.38);outline:0;padding:18px;font-size:16px;line-height:1.75}
-.editor .actions{margin-top:18px}.editor .btn{background:rgba(248,238,239,.62)}
-.editor .btn:hover{background:rgba(248,238,239,.96)}
-.empty{border-top:1px solid var(--line);padding:42px 0;color:var(--soft)}mark{background:rgba(174,119,132,.18);color:inherit}
-.music-player{position:fixed;right:30px;bottom:30px;z-index:100}.music-button{width:54px;height:54px;padding:0;border:4px solid currentColor;border-radius:48% 52% 50% 46%/51% 47% 53% 49%;background:rgba(255,255,255,.12);color:inherit;cursor:pointer;display:flex;align-items:center;justify-content:center}
-.play-icon{width:0;height:0;margin-left:3px;border-top:7px solid transparent;border-bottom:7px solid transparent;border-left:11px solid currentColor}.music-button.playing .play-icon{width:11px;height:15px;margin-left:0;border:0;border-left:4px solid currentColor;border-right:4px solid currentColor}
-@media(max-width:720px){.page{width:calc(100% - 40px);padding-top:35px}header{padding:55px 0 40px}.row{grid-template-columns:38px 1fr;gap:10px}.row .meta{grid-column:2}.drawer{padding-left:48px}.editor{padding:24px 18px 26px;margin-left:-48px}.date-fields{grid-template-columns:1fr}.textbox{min-height:280px}.music-player{right:20px;bottom:20px}.music-button{width:48px;height:48px;border-width:3px}}
+:root {
+  --bg:#f3e5e7;
+  --text:#805b63;
+  --soft:#9c7b82;
+  --line:rgba(128,91,99,.23);
+}
+
+* { box-sizing:border-box; }
+
+body {
+  margin:0;
+  background:var(--bg);
+  color:var(--text);
+  font-family:"Helvetica Neue",Helvetica,Arial,sans-serif;
+  font-weight:300;
+}
+
+button,input,textarea,select {
+  font:inherit;
+  color:inherit;
+}
+
+.page {
+  width:min(1120px,calc(100% - 80px));
+  margin:auto;
+  padding:58px 0 110px;
+}
+
+.topline {
+  display:flex;
+  justify-content:space-between;
+  font-size:11px;
+  text-transform:uppercase;
+  letter-spacing:.15em;
+  color:var(--soft);
+}
+
+.topline a {
+  color:inherit;
+  text-decoration:none;
+}
+
+header {
+  padding:72px 0 48px;
+}
+
+h1 {
+  margin:0;
+  font-size:clamp(65px,10vw,122px);
+  line-height:.9;
+  font-weight:300;
+  letter-spacing:-.065em;
+}
+
+.intro {
+  margin:30px 0 0;
+  max-width:690px;
+  color:var(--soft);
+  font-size:17px;
+  line-height:1.65;
+}
+
+/* SEARCH */
+
+.search-wrap {
+  border-top:1px solid var(--line);
+  border-bottom:1px solid var(--line);
+  padding:20px 0;
+}
+
+.search {
+  width:100%;
+  border:0;
+  outline:0;
+  background:transparent;
+  font-size:23px;
+  font-weight:300;
+}
+
+.search::placeholder {
+  color:rgba(128,91,99,.42);
+}
+
+.search-status {
+  margin-top:8px;
+  font-size:10px;
+  text-transform:uppercase;
+  letter-spacing:.11em;
+  color:var(--soft);
+}
+
+/* ADD ENTRY WORKSPACE */
+
+.quick-entry {
+  margin:28px 0 38px;
+  padding:32px;
+  background:rgba(255,255,255,.34);
+  border:1px solid rgba(128,91,99,.16);
+}
+
+.editor-heading {
+  font-size:12px;
+  text-transform:uppercase;
+  letter-spacing:.15em;
+  color:var(--text);
+  margin-bottom:7px;
+}
+
+.editor-note {
+  font-size:13px;
+  line-height:1.55;
+  color:var(--soft);
+  margin-bottom:25px;
+}
+
+.field-label {
+  display:block;
+  font-size:9px;
+  text-transform:uppercase;
+  letter-spacing:.12em;
+  color:var(--soft);
+  margin-bottom:5px;
+}
+
+.section-select {
+  width:100%;
+  border:0;
+  border-bottom:1px solid var(--line);
+  background:transparent;
+  outline:0;
+  padding:10px 0;
+  font-size:15px;
+  margin-bottom:22px;
+}
+
+.date-fields {
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:22px;
+  margin-bottom:22px;
+}
+
+.date-fields input {
+  width:100%;
+  border:0;
+  border-bottom:1px solid var(--line);
+  background:transparent;
+  outline:0;
+  padding:10px 0;
+  font-size:14px;
+}
+
+.type-picker {
+  margin:18px 0 20px;
+}
+
+.label {
+  font-size:10px;
+  text-transform:uppercase;
+  letter-spacing:.13em;
+  color:var(--soft);
+  margin-bottom:10px;
+}
+
+.type-options {
+  display:flex;
+  flex-wrap:wrap;
+  gap:12px 22px;
+  align-items:center;
+}
+
+.type-option {
+  display:flex;
+  align-items:center;
+  gap:8px;
+  font-size:14px;
+  color:var(--soft);
+}
+
+.custom-type {
+  display:flex;
+  align-items:center;
+  gap:8px;
+  min-width:260px;
+  flex:1;
+}
+
+.custom-type input[type="text"] {
+  width:100%;
+  border:0;
+  border-bottom:1px solid var(--line);
+  background:transparent;
+  outline:0;
+  padding:7px 0;
+}
+
+.textbox {
+  width:100%;
+  min-height:360px;
+  resize:vertical;
+  border:1px solid rgba(128,91,99,.25);
+  background:rgba(255,255,255,.38);
+  outline:0;
+  padding:18px;
+  font-size:16px;
+  line-height:1.75;
+}
+
+/* BUTTONS */
+
+.actions {
+  display:flex;
+  gap:10px;
+  flex-wrap:wrap;
+  margin-top:18px;
+}
+
+.actions .danger {
+  margin-left:auto;
+  opacity:.7;
+}
+
+.btn {
+  border:1px solid var(--line);
+  background:rgba(255,255,255,.18);
+  border-radius:999px;
+  padding:9px 15px;
+  cursor:pointer;
+  font-size:10px;
+  text-transform:uppercase;
+  letter-spacing:.11em;
+}
+
+.btn:hover {
+  background:rgba(255,255,255,.5);
+}
+
+/* NEW SUBSECTION */
+
+.composer {
+  padding:28px 0 36px;
+  border-top:1px solid var(--line);
+}
+
+.new-title {
+  width:100%;
+  border:0;
+  border-bottom:1px solid var(--line);
+  outline:0;
+  background:transparent;
+  padding:5px 0 13px;
+  font-size:25px;
+}
+
+/* ARCHIVE */
+
+.list {
+  border-bottom:1px solid var(--line);
+}
+
+.item {
+  border-top:1px solid var(--line);
+}
+
+.row {
+  width:100%;
+  border:0;
+  background:transparent;
+  cursor:pointer;
+  display:grid;
+  grid-template-columns:55px minmax(0,1fr) auto;
+  gap:20px;
+  align-items:center;
+  text-align:left;
+  padding:25px 0 12px;
+}
+
+.num,
+.meta {
+  font-size:10px;
+  text-transform:uppercase;
+  letter-spacing:.1em;
+  color:var(--soft);
+}
+
+.title {
+  font-size:clamp(25px,3.3vw,39px);
+  letter-spacing:-.035em;
+  line-height:1.08;
+}
+
+.plus {
+  display:inline-block;
+  min-width:18px;
+  text-align:center;
+  font-size:21px;
+}
+
+/* SUBSECTION CONTROLS */
+
+.section-tools {
+  display:flex;
+  gap:14px;
+  margin:0 0 20px 75px;
+}
+
+.section-tools button {
+  border:0;
+  background:transparent;
+  padding:0;
+  cursor:pointer;
+  font-size:9px;
+  text-transform:uppercase;
+  letter-spacing:.11em;
+  color:var(--soft);
+}
+
+.section-tools button:hover {
+  color:var(--text);
+}
+
+.section-tools .delete-section {
+  margin-left:auto;
+  opacity:.7;
+}
+
+/* OPEN SUBSECTION */
+
+.drawer {
+  display:none;
+  padding:4px 0 46px 75px;
+}
+
+.item.open .drawer {
+  display:block;
+}
+
+.archive-entries {
+  padding:4px 0 22px;
+}
+
+.archive-heading {
+  font-size:10px;
+  text-transform:uppercase;
+  letter-spacing:.13em;
+  color:var(--soft);
+  margin:6px 0 8px;
+}
+
+/* INDIVIDUAL ENTRIES */
+
+.entry {
+  border-top:1px solid var(--line);
+  padding:28px 4px;
+}
+
+.entry-date {
+  font-size:11px;
+  text-transform:uppercase;
+  letter-spacing:.11em;
+  color:var(--soft);
+  margin-bottom:12px;
+}
+
+.entry-tags {
+  font-size:10px;
+  text-transform:uppercase;
+  letter-spacing:.11em;
+  color:var(--soft);
+  margin:-5px 0 14px;
+}
+
+.entry-text {
+  white-space:pre-wrap;
+  overflow-wrap:anywhere;
+  font-size:16px;
+  line-height:1.82;
+}
+
+.entry-tools {
+  margin-top:16px;
+  display:flex;
+  gap:12px;
+}
+
+.entry-tools button {
+  border:0;
+  background:transparent;
+  padding:0;
+  cursor:pointer;
+  font-size:9px;
+  text-transform:uppercase;
+  letter-spacing:.11em;
+  color:var(--soft);
+}
+
+.entry-tools button:hover {
+  color:var(--text);
+}
+
+/* EDIT ENTRY */
+
+.editor {
+  margin-top:18px;
+  padding:30px 30px 32px;
+  background:rgba(255,255,255,.30);
+  border:1px solid rgba(128,91,99,.16);
+}
+
+.editor .actions {
+  margin-top:18px;
+}
+
+/* SEARCH */
+
+.empty {
+  border-top:1px solid var(--line);
+  padding:42px 0;
+  color:var(--soft);
+}
+
+mark {
+  background:rgba(174,119,132,.18);
+  color:inherit;
+}
+
+/* MUSIC */
+
+.music-player {
+  position:fixed;
+  right:30px;
+  bottom:30px;
+  z-index:100;
+}
+
+.music-button {
+  width:54px;
+  height:54px;
+  padding:0;
+  border:4px solid currentColor;
+  border-radius:48% 52% 50% 46%/51% 47% 53% 49%;
+  background:rgba(255,255,255,.12);
+  color:inherit;
+  cursor:pointer;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+}
+
+.play-icon {
+  width:0;
+  height:0;
+  margin-left:3px;
+  border-top:7px solid transparent;
+  border-bottom:7px solid transparent;
+  border-left:11px solid currentColor;
+}
+
+.music-button.playing .play-icon {
+  width:11px;
+  height:15px;
+  margin-left:0;
+  border:0;
+  border-left:4px solid currentColor;
+  border-right:4px solid currentColor;
+}
+
+/* MOBILE */
+
+@media(max-width:720px) {
+  .page {
+    width:calc(100% - 40px);
+    padding-top:35px;
+  }
+
+  header {
+    padding:55px 0 40px;
+  }
+
+  .quick-entry {
+    padding:24px 18px;
+  }
+
+  .date-fields {
+    grid-template-columns:1fr;
+  }
+
+  .textbox {
+    min-height:280px;
+  }
+
+  .row {
+    grid-template-columns:38px 1fr;
+    gap:10px;
+  }
+
+  .row .meta {
+    grid-column:2;
+  }
+
+  .section-tools {
+    margin-left:48px;
+    flex-wrap:wrap;
+  }
+
+  .section-tools .delete-section {
+    margin-left:0;
+  }
+
+  .drawer {
+    padding-left:48px;
+  }
+
+  .editor {
+    padding:24px 18px 26px;
+    margin-left:-48px;
+  }
+
+  .music-player {
+    right:20px;
+    bottom:20px;
+  }
+
+  .music-button {
+    width:48px;
+    height:48px;
+    border-width:3px;
+  }
+}
 </style>
 </head>
+
 <body>
+
 <main class="page">
-<div class="topline"><a href="index.html">Hina's Curriculum</a><span>Personal Archive</span></div>
-<header><h1>index</h1><p class="intro">an archive of what I have written, noticed, lived through, and wanted to remember — gathered from journals, notebooks, and earlier versions of myself.</p></header>
+
+<div class="topline">
+  <a href="index.html">Hina's Curriculum</a>
+  <span>Personal Archive</span>
+</div>
+
+<header>
+  <h1>index</h1>
+  <p class="intro">
+    an archive of what I have written, noticed, lived through, and wanted to remember —
+    gathered from journals, notebooks, and earlier versions of myself.
+  </p>
+</header>
+
+<!-- SEARCH -->
 
 <section class="search-wrap">
-<input id="search" class="search" type="search" placeholder="search the archive...">
-<div id="searchStatus" class="search-status">searches subsection titles and the full text of every entry</div>
+  <input
+    id="search"
+    class="search"
+    type="search"
+    placeholder="search the archive..."
+  >
+  <div id="searchStatus" class="search-status">
+    searches subsection titles and the full text of every entry
+  </div>
 </section>
+
+<!-- ADD A NEW ENTRY -->
+
+<section class="quick-entry">
+
+  <div class="editor-heading">add a new entry</div>
+
+  <div class="editor-note">
+    Choose where it belongs, then add the original date, type of writing, and text.
+  </div>
+
+  <label>
+    <span class="field-label">subsection</span>
+    <select id="quickSection" class="section-select">
+      <option value="">choose a subsection...</option>
+    </select>
+  </label>
+
+  <div class="date-fields">
+
+    <label>
+      <span class="field-label">exact original date</span>
+      <input id="quickExact" type="date">
+    </label>
+
+    <label>
+      <span class="field-label">flexible original date</span>
+      <input
+        id="quickLabel"
+        type="text"
+        placeholder="March 2018, Summer 2014..."
+      >
+    </label>
+
+  </div>
+
+  <div class="type-picker">
+
+    <div class="label">type of writing</div>
+
+    <div class="type-options">
+
+      <label class="type-option">
+        <input id="quickJournal" type="checkbox">
+        journal entry
+      </label>
+
+      <label class="type-option">
+        <input id="quickBlog" type="checkbox">
+        blog post
+      </label>
+
+      <label class="type-option custom-type">
+        <input id="quickOther" type="checkbox">
+        other
+        <input
+          id="quickCustom"
+          type="text"
+          placeholder="write your own label..."
+        >
+      </label>
+
+    </div>
+
+  </div>
+
+  <div class="field-label">text</div>
+
+  <textarea
+    id="quickText"
+    class="textbox"
+    placeholder="Paste or type as much of the original writing as you need..."
+  ></textarea>
+
+  <div class="actions">
+    <button id="quickSave" class="btn" type="button">
+      save entry
+    </button>
+  </div>
+
+</section>
+
+<!-- CREATE A SUBSECTION -->
 
 <section class="composer">
-<div class="label">new subsection</div>
-<input id="newTitle" class="new-title" placeholder="e.g. Journal · 2018, Medical School, Residency · PGY-1...">
-<div class="actions"><button id="addSection" class="btn" type="button">add to index</button></div>
+
+  <div class="label">new subsection</div>
+
+  <input
+    id="newTitle"
+    class="new-title"
+    placeholder="e.g. Journal · 2018, Medical School, Residency · PGY-1..."
+  >
+
+  <div class="actions">
+    <button id="addSection" class="btn" type="button">
+      add to index
+    </button>
+  </div>
+
 </section>
 
+<!-- ARCHIVE -->
+
 <section id="list" class="list"></section>
+
 </main>
 
-<div class="music-player"><button class="music-button" id="musicButton" type="button" aria-label="Play music"><span class="play-icon"></span></button></div>
-<audio id="siteMusic" loop preload="auto"><source src="doria.mp3" type="audio/mpeg"></audio>
+<!-- MUSIC -->
+
+<div class="music-player">
+  <button
+    class="music-button"
+    id="musicButton"
+    type="button"
+    aria-label="Play music"
+  >
+    <span class="play-icon"></span>
+  </button>
+</div>
+
+<audio id="siteMusic" loop preload="auto">
+  <source src="doria.mp3" type="audio/mpeg">
+</audio>
 
 <script>
-const SECTION="personal-index";
-const list=document.getElementById("list"),search=document.getElementById("search"),searchStatus=document.getElementById("searchStatus"),newTitle=document.getElementById("newTitle"),addSection=document.getElementById("addSection");
-let sections=[],details=new Map();
 
-function displayDate(e){
-  if(e.original_date_label) return e.original_date_label;
-  if(e.original_date) return new Date(e.original_date+"T12:00:00").toLocaleDateString(undefined,{year:"numeric",month:"long",day:"numeric"});
+const SECTION = "personal-index";
+
+const list = document.getElementById("list");
+const search = document.getElementById("search");
+const searchStatus = document.getElementById("searchStatus");
+const newTitle = document.getElementById("newTitle");
+const addSection = document.getElementById("addSection");
+
+const quickSection = document.getElementById("quickSection");
+const quickExact = document.getElementById("quickExact");
+const quickLabel = document.getElementById("quickLabel");
+const quickJournal = document.getElementById("quickJournal");
+const quickBlog = document.getElementById("quickBlog");
+const quickOther = document.getElementById("quickOther");
+const quickCustom = document.getElementById("quickCustom");
+const quickText = document.getElementById("quickText");
+const quickSave = document.getElementById("quickSave");
+
+let sections = [];
+let details = new Map();
+
+/* HELPERS */
+
+function displayDate(entry) {
+  if (entry.original_date_label) {
+    return entry.original_date_label;
+  }
+
+  if (entry.original_date) {
+    return new Date(
+      entry.original_date + "T12:00:00"
+    ).toLocaleDateString(undefined,{
+      year:"numeric",
+      month:"long",
+      day:"numeric"
+    });
+  }
+
   return "date unknown";
 }
-function escapeHTML(s){return String(s??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#039;"}[c]))}
-function highlight(text,q){
-  if(!q)return escapeHTML(text);
-  const safe=escapeHTML(text),needle=q.replace(/[.*+?^${}()|[\]\\]/g,"\\$&");
-  return safe.replace(new RegExp(`(${needle})`,"gi"),"<mark>$1</mark>");
+
+function escapeHTML(value) {
+  return String(value ?? "").replace(
+    /[&<>"']/g,
+    char => ({
+      "&":"&amp;",
+      "<":"&lt;",
+      ">":"&gt;",
+      '"':"&quot;",
+      "'":"&#039;"
+    }[char])
+  );
 }
-async function getDetail(id,force=false){
-  if(details.has(id)&&!force)return details.get(id);
-  const r=await fetch(`/api/thoughts/${id}`),d=await r.json();details.set(id,d);return d;
+
+function highlight(text,query) {
+
+  if (!query) {
+    return escapeHTML(text);
+  }
+
+  const safe = escapeHTML(text);
+
+  const needle = query.replace(
+    /[.*+?^${}()|[\]\\]/g,
+    "\\$&"
+  );
+
+  return safe.replace(
+    new RegExp(`(${needle})`,"gi"),
+    "<mark>$1</mark>"
+  );
 }
-async function load(){
-  const r=await fetch(`/api/thoughts?section=${encodeURIComponent(SECTION)}`);sections=await r.json();
-  await Promise.all(sections.map(s=>getDetail(s.id)));
+
+/* FETCH ONE SUBSECTION */
+
+async function getDetail(id,force=false) {
+
+  if (details.has(id) && !force) {
+    return details.get(id);
+  }
+
+  const response = await fetch(`/api/thoughts/${id}`);
+  const data = await response.json();
+
+  details.set(id,data);
+
+  return data;
+}
+
+/* LOAD EVERYTHING */
+
+async function load() {
+
+  const response = await fetch(
+    `/api/thoughts?section=${encodeURIComponent(SECTION)}`
+  );
+
+  sections = await response.json();
+
+  await Promise.all(
+    sections.map(section => getDetail(section.id))
+  );
+
+  quickSection.innerHTML =
+    '<option value="">choose a subsection...</option>' +
+    sections.map(section =>
+      `<option value="${section.id}">${escapeHTML(section.title)}</option>`
+    ).join("");
+
   render();
 }
-function render(){
-  const q=search.value.trim().toLowerCase();list.innerHTML="";let shown=0,matchEntries=0;
-  sections.forEach((s,i)=>{
-    const d=details.get(s.id)||{entries:[]};
-    const titleHit=s.title.toLowerCase().includes(q);
-    const hits=(d.entries||[]).filter(e=>!q||e.content.toLowerCase().includes(q)||(e.original_date_label||"").toLowerCase().includes(q)||(e.original_date||"").includes(q)||(e.entry_types||"").toLowerCase().includes(q)||(e.custom_type||"").toLowerCase().includes(q));
-    if(q&&!titleHit&&!hits.length)return;
-    shown++;matchEntries+=hits.length;
-    const item=document.createElement("article");item.className="item"+(q?" open":"");item.dataset.id=s.id;
-    const row=document.createElement("button");row.className="row";row.type="button";
-    row.innerHTML=`<span class="num">${String(i+1).padStart(2,"0")}</span><span class="title">${highlight(s.title,q)}</span><span class="meta">${q?`${hits.length} text match${hits.length===1?"":"es"}`:"open"} &nbsp; <span class="plus">${q?"−":"+"}</span></span>`;
-    const drawer=document.createElement("div");drawer.className="drawer";
-    row.addEventListener("click",()=>{
-      item.classList.toggle("open");
-      const isOpen=item.classList.contains("open");
-      row.querySelector(".plus").textContent=isOpen?"−":"+";
-      if(!q) row.querySelector(".meta").childNodes[0].textContent=isOpen?"close ":"open ";
-      if(isOpen)drawDrawer(drawer,d,q);
-    });
-    item.append(row,drawer);list.append(item);if(q)drawDrawer(drawer,d,q);
-  });
-  if(!shown)list.innerHTML='<div class="empty">no matches in the archive.</div>';
-  searchStatus.textContent=q?`${shown} subsection${shown===1?"":"s"} · ${matchEntries} matching text entr${matchEntries===1?"y":"ies"}`:"searches subsection titles and the full text of every entry";
-}
-function drawDrawer(drawer,d,q=""){
-  drawer.innerHTML="";
-  let entries=(d.entries||[]).filter(e=>!q||e.content.toLowerCase().includes(q)||(e.original_date_label||"").toLowerCase().includes(q)||(e.original_date||"").includes(q)||(e.entry_types||"").toLowerCase().includes(q)||(e.custom_type||"").toLowerCase().includes(q));
 
-  if(entries.length){
-    const archive=document.createElement("div");archive.className="archive-entries";
-    const heading=document.createElement("div");heading.className="archive-heading";
-    heading.textContent=q?"matching archived entries":"archived entries";
-    archive.append(heading);
+/* RENDER ARCHIVE */
 
-    entries.forEach(e=>{
-      const block=document.createElement("div");block.className="entry";
-      const types=[];const savedTypes=(e.entry_types||"").split(",").map(x=>x.trim()).filter(Boolean);if(savedTypes.includes("journal"))types.push("Journal Entry");if(savedTypes.includes("blog"))types.push("Blog Post");if(e.custom_type)types.push(e.custom_type);
-      block.innerHTML=`<div class="entry-date">${escapeHTML(displayDate(e))}</div>${types.length?`<div class="entry-tags">${types.map(escapeHTML).join(" · ")}</div>`:""}<div class="entry-text">${highlight(e.content,q)}</div><div class="entry-tools"><button type="button" data-edit>edit</button></div>`;
-      block.querySelector("[data-edit]").addEventListener("click",()=>editEntry(drawer,d,e));archive.append(block);
-    });
-    drawer.append(archive);
-  }
-  if(!q)drawer.append(makeEditor(d,drawer));
-}
-function makeEditor(d,drawer,existing=null){
-  const wrap=document.createElement("div");wrap.className="editor";
-  wrap.innerHTML=`<div class="editor-heading">${existing?"edit archived entry":"add a new entry"}</div>
-  <div class="editor-note">${existing?"Make changes to this archived piece below.":"Transcribe or add one distinct piece of writing to this subsection."}</div>
-  <div class="date-fields">
-    <label><span class="field-label">exact original date</span><input class="exact-date" type="date" aria-label="Exact original date"></label>
-    <label><span class="field-label">flexible original date</span><input class="date-label" placeholder="March 2018, Summer 2014..."></label>
-  </div>
-  <div class="type-picker"><div class="label">type of writing</div><div class="type-options">
-    <label class="type-option"><input class="type-journal" type="checkbox"> journal entry</label>
-    <label class="type-option"><input class="type-blog" type="checkbox"> blog post</label>
-    <label class="type-option custom-type"><input class="type-other" type="checkbox"> other <input class="custom-type-text" type="text" placeholder="write your own label..."></label>
-  </div></div>
-  <div class="field-label">text</div>
-  <textarea class="textbox" placeholder="Paste or type as much of the original writing as you need..."></textarea>
-  <div class="actions"><button class="btn save" type="button">${existing?"save changes":"save entry"}</button>${existing?'<button class="btn cancel" type="button">cancel</button>':""}${existing?'<button class="btn danger delete" type="button">delete entry</button>':""}</div>`;
-  const exact=wrap.querySelector(".exact-date"),label=wrap.querySelector(".date-label"),box=wrap.querySelector(".textbox");
-  const journal=wrap.querySelector(".type-journal"),blog=wrap.querySelector(".type-blog"),other=wrap.querySelector(".type-other"),custom=wrap.querySelector(".custom-type-text");
-  if(existing){exact.value=existing.original_date||"";label.value=existing.original_date_label||"";box.value=existing.content;const saved=(existing.entry_types||"").split(",");journal.checked=saved.includes("journal");blog.checked=saved.includes("blog");custom.value=existing.custom_type||"";other.checked=Boolean(existing.custom_type)}
-  custom.addEventListener("input",()=>{if(custom.value.trim())other.checked=true});other.addEventListener("change",()=>{if(!other.checked)custom.value=""});
-  wrap.querySelector(".save").addEventListener("click",async()=>{
-    const content=box.value.trim();if(!content)return;
-    const selected=[];if(journal.checked)selected.push("journal");if(blog.checked)selected.push("blog");
-    const payload={content,original_date:exact.value||null,original_date_label:label.value.trim()||null,entry_types:selected.join(","),custom_type:other.checked?(custom.value.trim()||null):null};
-    if(existing){
-      await fetch(`/api/entries/${existing.id}`,{method:"PATCH",headers:{"Content-Type":"application/json"},body:JSON.stringify(payload)});
-    }else{
-      await fetch(`/api/thoughts/${d.id}/entries`,{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify(payload)});
+function render() {
+
+  const query = search.value.trim().toLowerCase();
+
+  list.innerHTML = "";
+
+  let shown = 0;
+  let matchEntries = 0;
+
+  sections.forEach((section,index) => {
+
+    const detail =
+      details.get(section.id) || {entries:[]};
+
+    const titleHit =
+      section.title.toLowerCase().includes(query);
+
+    const hits =
+      (detail.entries || []).filter(entry =>
+        !query ||
+        entry.content.toLowerCase().includes(query) ||
+        (entry.original_date_label || "").toLowerCase().includes(query) ||
+        (entry.original_date || "").includes(query) ||
+        (entry.entry_types || "").toLowerCase().includes(query) ||
+        (entry.custom_type || "").toLowerCase().includes(query)
+      );
+
+    if (
+      query &&
+      !titleHit &&
+      !hits.length
+    ) {
+      return;
     }
-    const fresh=await getDetail(d.id,true);drawDrawer(drawer,fresh);
+
+    shown++;
+    matchEntries += hits.length;
+
+    const item =
+      document.createElement("article");
+
+    item.className =
+      "item" + (query ? " open" : "");
+
+    item.dataset.id = section.id;
+
+    /* MAIN SUBSECTION ROW */
+
+    const row =
+      document.createElement("button");
+
+    row.className = "row";
+    row.type = "button";
+
+    row.innerHTML = `
+      <span class="num">
+        ${String(index + 1).padStart(2,"0")}
+      </span>
+
+      <span class="title">
+        ${highlight(section.title,query)}
+      </span>
+
+      <span class="meta">
+        ${
+          query
+            ? `${hits.length} text match${hits.length === 1 ? "" : "es"}`
+            : "open"
+        }
+        &nbsp;
+        <span class="plus">${query ? "−" : "+"}</span>
+      </span>
+    `;
+
+    const drawer =
+      document.createElement("div");
+
+    drawer.className = "drawer";
+
+    row.addEventListener("click",() => {
+
+      item.classList.toggle("open");
+
+      const isOpen =
+        item.classList.contains("open");
+
+      row.querySelector(".plus").textContent =
+        isOpen ? "−" : "+";
+
+      if (!query) {
+        row.querySelector(".meta").childNodes[0].textContent =
+          isOpen ? "close " : "open ";
+      }
+
+      if (isOpen) {
+        drawDrawer(drawer,detail,query);
+      }
+
+    });
+
+    item.append(row);
+
+    /* SUBSECTION EDIT / DELETE */
+
+    const sectionTools =
+      document.createElement("div");
+
+    sectionTools.className = "section-tools";
+
+    sectionTools.innerHTML = `
+      <button
+        type="button"
+        class="rename-section"
+      >
+        edit subsection name
+      </button>
+
+      <button
+        type="button"
+        class="delete-section"
+      >
+        delete subsection
+      </button>
+    `;
+
+    sectionTools
+      .querySelector(".rename-section")
+      .addEventListener("click",async() => {
+
+        const updatedTitle =
+          prompt(
+            "Edit subsection name:",
+            section.title
+          );
+
+        if (
+          !updatedTitle ||
+          !updatedTitle.trim() ||
+          updatedTitle.trim() === section.title
+        ) {
+          return;
+        }
+
+        await fetch(
+          `/api/thoughts/${section.id}`,
+          {
+            method:"PATCH",
+            headers:{
+              "Content-Type":"application/json"
+            },
+            body:JSON.stringify({
+              title:updatedTitle.trim()
+            })
+          }
+        );
+
+        details.clear();
+
+        await load();
+
+      });
+
+    sectionTools
+      .querySelector(".delete-section")
+      .addEventListener("click",async() => {
+
+        const okay =
+          confirm(
+            `Delete "${section.title}" and every entry inside it? This cannot be undone.`
+          );
+
+        if (!okay) {
+          return;
+        }
+
+        await fetch(
+          `/api/thoughts/${section.id}`,
+          {
+            method:"DELETE"
+          }
+        );
+
+        details.delete(section.id);
+
+        await load();
+
+      });
+
+    item.append(
+      sectionTools,
+      drawer
+    );
+
+    list.append(item);
+
+    if (query) {
+      drawDrawer(
+        drawer,
+        detail,
+        query
+      );
+    }
+
   });
-  if(existing){
-    wrap.querySelector(".cancel").addEventListener("click",()=>drawDrawer(drawer,d));
-    wrap.querySelector(".delete").addEventListener("click",async()=>{if(!confirm("Delete this journal entry?"))return;await fetch(`/api/entries/${existing.id}`,{method:"DELETE"});const fresh=await getDetail(d.id,true);drawDrawer(drawer,fresh)});
+
+  if (!shown) {
+    list.innerHTML =
+      '<div class="empty">no matches in the archive.</div>';
   }
+
+  searchStatus.textContent =
+    query
+      ? `${shown} subsection${shown === 1 ? "" : "s"} · ${matchEntries} matching text entr${matchEntries === 1 ? "y" : "ies"}`
+      : "searches subsection titles and the full text of every entry";
+}
+
+/* DRAW ENTRIES */
+
+function drawDrawer(
+  drawer,
+  detail,
+  query=""
+) {
+
+  drawer.innerHTML = "";
+
+  const entries =
+    (detail.entries || []).filter(entry =>
+      !query ||
+      entry.content.toLowerCase().includes(query) ||
+      (entry.original_date_label || "").toLowerCase().includes(query) ||
+      (entry.original_date || "").includes(query) ||
+      (entry.entry_types || "").toLowerCase().includes(query) ||
+      (entry.custom_type || "").toLowerCase().includes(query)
+    );
+
+  if (!entries.length) {
+
+    const empty =
+      document.createElement("div");
+
+    empty.className = "empty";
+
+    empty.textContent =
+      "no entries in this subsection yet.";
+
+    drawer.append(empty);
+
+    return;
+  }
+
+  const archive =
+    document.createElement("div");
+
+  archive.className =
+    "archive-entries";
+
+  const heading =
+    document.createElement("div");
+
+  heading.className =
+    "archive-heading";
+
+  heading.textContent =
+    query
+      ? "matching archived entries"
+      : "archived entries";
+
+  archive.append(heading);
+
+  entries.forEach(entry => {
+
+    const block =
+      document.createElement("div");
+
+    block.className = "entry";
+
+    const types = [];
+
+    const savedTypes =
+      (entry.entry_types || "")
+        .split(",")
+        .map(type => type.trim())
+        .filter(Boolean);
+
+    if (
+      savedTypes.includes("journal")
+    ) {
+      types.push("Journal Entry");
+    }
+
+    if (
+      savedTypes.includes("blog")
+    ) {
+      types.push("Blog Post");
+    }
+
+    if (entry.custom_type) {
+      types.push(entry.custom_type);
+    }
+
+    block.innerHTML = `
+      <div class="entry-date">
+        ${escapeHTML(displayDate(entry))}
+      </div>
+
+      ${
+        types.length
+          ? `<div class="entry-tags">${types.map(escapeHTML).join(" · ")}</div>`
+          : ""
+      }
+
+      <div class="entry-text">
+        ${highlight(entry.content,query)}
+      </div>
+
+      <div class="entry-tools">
+
+        <button
+          type="button"
+          data-edit
+        >
+          edit entry
+        </button>
+
+        <button
+          type="button"
+          data-delete
+        >
+          delete entry
+        </button>
+
+      </div>
+    `;
+
+    block
+      .querySelector("[data-edit]")
+      .addEventListener("click",() => {
+        editEntry(
+          drawer,
+          detail,
+          entry
+        );
+      });
+
+    block
+      .querySelector("[data-delete]")
+      .addEventListener("click",async() => {
+
+        const okay =
+          confirm(
+            "Delete this entry? This cannot be undone."
+          );
+
+        if (!okay) {
+          return;
+        }
+
+        await fetch(
+          `/api/entries/${entry.id}`,
+          {
+            method:"DELETE"
+          }
+        );
+
+        const fresh =
+          await getDetail(
+            detail.id,
+            true
+          );
+
+        drawDrawer(
+          drawer,
+          fresh
+        );
+
+      });
+
+    archive.append(block);
+
+  });
+
+  drawer.append(archive);
+}
+
+/* EDIT EXISTING ENTRY */
+
+function makeEditor(
+  detail,
+  drawer,
+  existing
+) {
+
+  const wrap =
+    document.createElement("div");
+
+  wrap.className = "editor";
+
+  wrap.innerHTML = `
+
+    <div class="editor-heading">
+      edit archived entry
+    </div>
+
+    <div class="editor-note">
+      Make changes to this archived piece below.
+    </div>
+
+    <div class="date-fields">
+
+      <label>
+        <span class="field-label">
+          exact original date
+        </span>
+
+        <input
+          class="exact-date"
+          type="date"
+        >
+      </label>
+
+      <label>
+        <span class="field-label">
+          flexible original date
+        </span>
+
+        <input
+          class="date-label"
+          type="text"
+          placeholder="March 2018, Summer 2014..."
+        >
+      </label>
+
+    </div>
+
+    <div class="type-picker">
+
+      <div class="label">
+        type of writing
+      </div>
+
+      <div class="type-options">
+
+        <label class="type-option">
+          <input
+            class="type-journal"
+            type="checkbox"
+          >
+          journal entry
+        </label>
+
+        <label class="type-option">
+          <input
+            class="type-blog"
+            type="checkbox"
+          >
+          blog post
+        </label>
+
+        <label class="type-option custom-type">
+
+          <input
+            class="type-other"
+            type="checkbox"
+          >
+
+          other
+
+          <input
+            class="custom-type-text"
+            type="text"
+            placeholder="write your own label..."
+          >
+
+        </label>
+
+      </div>
+
+    </div>
+
+    <div class="field-label">
+      text
+    </div>
+
+    <textarea
+      class="textbox"
+    ></textarea>
+
+    <div class="actions">
+
+      <button
+        class="btn save"
+        type="button"
+      >
+        save changes
+      </button>
+
+      <button
+        class="btn cancel"
+        type="button"
+      >
+        cancel
+      </button>
+
+      <button
+        class="btn danger delete"
+        type="button"
+      >
+        delete entry
+      </button>
+
+    </div>
+  `;
+
+  const exact =
+    wrap.querySelector(".exact-date");
+
+  const label =
+    wrap.querySelector(".date-label");
+
+  const box =
+    wrap.querySelector(".textbox");
+
+  const journal =
+    wrap.querySelector(".type-journal");
+
+  const blog =
+    wrap.querySelector(".type-blog");
+
+  const other =
+    wrap.querySelector(".type-other");
+
+  const custom =
+    wrap.querySelector(".custom-type-text");
+
+  exact.value =
+    existing.original_date || "";
+
+  label.value =
+    existing.original_date_label || "";
+
+  box.value =
+    existing.content || "";
+
+  const saved =
+    (existing.entry_types || "")
+      .split(",");
+
+  journal.checked =
+    saved.includes("journal");
+
+  blog.checked =
+    saved.includes("blog");
+
+  custom.value =
+    existing.custom_type || "";
+
+  other.checked =
+    Boolean(existing.custom_type);
+
+  custom.addEventListener(
+    "input",
+    () => {
+      if (custom.value.trim()) {
+        other.checked = true;
+      }
+    }
+  );
+
+  other.addEventListener(
+    "change",
+    () => {
+      if (!other.checked) {
+        custom.value = "";
+      }
+    }
+  );
+
+  wrap
+    .querySelector(".save")
+    .addEventListener("click",async() => {
+
+      const content =
+        box.value.trim();
+
+      if (!content) {
+        return;
+      }
+
+      const selected = [];
+
+      if (journal.checked) {
+        selected.push("journal");
+      }
+
+      if (blog.checked) {
+        selected.push("blog");
+      }
+
+      const payload = {
+        content,
+        original_date:
+          exact.value || null,
+        original_date_label:
+          label.value.trim() || null,
+        entry_types:
+          selected.join(","),
+        custom_type:
+          other.checked
+            ? custom.value.trim() || null
+            : null
+      };
+
+      await fetch(
+        `/api/entries/${existing.id}`,
+        {
+          method:"PATCH",
+          headers:{
+            "Content-Type":"application/json"
+          },
+          body:JSON.stringify(payload)
+        }
+      );
+
+      const fresh =
+        await getDetail(
+          detail.id,
+          true
+        );
+
+      drawDrawer(
+        drawer,
+        fresh
+      );
+
+    });
+
+  wrap
+    .querySelector(".cancel")
+    .addEventListener("click",() => {
+      drawDrawer(
+        drawer,
+        detail
+      );
+    });
+
+  wrap
+    .querySelector(".delete")
+    .addEventListener("click",async() => {
+
+      const okay =
+        confirm(
+          "Delete this entry? This cannot be undone."
+        );
+
+      if (!okay) {
+        return;
+      }
+
+      await fetch(
+        `/api/entries/${existing.id}`,
+        {
+          method:"DELETE"
+        }
+      );
+
+      const fresh =
+        await getDetail(
+          detail.id,
+          true
+        );
+
+      drawDrawer(
+        drawer,
+        fresh
+      );
+
+    });
+
   return wrap;
 }
-function editEntry(drawer,d,e){drawer.innerHTML="";drawer.append(makeEditor(d,drawer,e))}
-async function createSection(){
-  const title=newTitle.value.trim();if(!title)return;
-  addSection.disabled=true;
-  await fetch("/api/thoughts",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({section:SECTION,title,body:""})});
-  newTitle.value="";details.clear();addSection.disabled=false;await load();
-}
-addSection.addEventListener("click",createSection);newTitle.addEventListener("keydown",e=>{if(e.key==="Enter")createSection()});search.addEventListener("input",render);load();
 
-const musicButton=document.getElementById("musicButton"),siteMusic=document.getElementById("siteMusic");
-const savedTime=parseFloat(localStorage.getItem("musicTime"))||0,wasPlaying=localStorage.getItem("musicPlaying")==="true";
-siteMusic.addEventListener("loadedmetadata",async()=>{if(savedTime<siteMusic.duration)siteMusic.currentTime=savedTime;if(wasPlaying){try{await siteMusic.play();musicButton.classList.add("playing")}catch{}}});
-musicButton.addEventListener("click",async()=>{if(siteMusic.paused){try{await siteMusic.play();localStorage.setItem("musicPlaying","true");musicButton.classList.add("playing")}catch{}}else{siteMusic.pause();localStorage.setItem("musicPlaying","false");musicButton.classList.remove("playing")}});
-siteMusic.addEventListener("timeupdate",()=>localStorage.setItem("musicTime",siteMusic.currentTime));
-window.addEventListener("pagehide",()=>{localStorage.setItem("musicTime",siteMusic.currentTime);localStorage.setItem("musicPlaying",String(!siteMusic.paused))});
+function editEntry(
+  drawer,
+  detail,
+  entry
+) {
+
+  drawer.innerHTML = "";
+
+  drawer.append(
+    makeEditor(
+      detail,
+      drawer,
+      entry
+    )
+  );
+}
+
+/* QUICK ADD ENTRY */
+
+quickCustom.addEventListener(
+  "input",
+  () => {
+    if (quickCustom.value.trim()) {
+      quickOther.checked = true;
+    }
+  }
+);
+
+quickOther.addEventListener(
+  "change",
+  () => {
+    if (!quickOther.checked) {
+      quickCustom.value = "";
+    }
+  }
+);
+
+quickSave.addEventListener(
+  "click",
+  async() => {
+
+    const thoughtId =
+      quickSection.value;
+
+    const content =
+      quickText.value.trim();
+
+    if (!thoughtId) {
+      alert(
+        "Choose a subsection first."
+      );
+      return;
+    }
+
+    if (!content) {
+      alert(
+        "Add some text first."
+      );
+      return;
+    }
+
+    const selected = [];
+
+    if (quickJournal.checked) {
+      selected.push("journal");
+    }
+
+    if (quickBlog.checked) {
+      selected.push("blog");
+    }
+
+    const payload = {
+      content,
+      original_date:
+        quickExact.value || null,
+      original_date_label:
+        quickLabel.value.trim() || null,
+      entry_types:
+        selected.join(","),
+      custom_type:
+        quickOther.checked
+          ? quickCustom.value.trim() || null
+          : null
+    };
+
+    quickSave.disabled = true;
+
+    await fetch(
+      `/api/thoughts/${thoughtId}/entries`,
+      {
+        method:"POST",
+        headers:{
+          "Content-Type":"application/json"
+        },
+        body:JSON.stringify(payload)
+      }
+    );
+
+    quickExact.value = "";
+    quickLabel.value = "";
+    quickJournal.checked = false;
+    quickBlog.checked = false;
+    quickOther.checked = false;
+    quickCustom.value = "";
+    quickText.value = "";
+
+    await getDetail(
+      Number(thoughtId),
+      true
+    );
+
+    quickSave.disabled = false;
+
+    render();
+
+  }
+);
+
+/* CREATE SUBSECTION */
+
+async function createSection() {
+
+  const title =
+    newTitle.value.trim();
+
+  if (!title) {
+    return;
+  }
+
+  addSection.disabled = true;
+
+  await fetch(
+    "/api/thoughts",
+    {
+      method:"POST",
+      headers:{
+        "Content-Type":"application/json"
+      },
+      body:JSON.stringify({
+        section:SECTION,
+        title,
+        body:""
+      })
+    }
+  );
+
+  newTitle.value = "";
+
+  details.clear();
+
+  addSection.disabled = false;
+
+  await load();
+}
+
+addSection.addEventListener(
+  "click",
+  createSection
+);
+
+newTitle.addEventListener(
+  "keydown",
+  event => {
+    if (event.key === "Enter") {
+      createSection();
+    }
+  }
+);
+
+search.addEventListener(
+  "input",
+  render
+);
+
+load();
+
+/* MUSIC */
+
+const musicButton =
+  document.getElementById(
+    "musicButton"
+  );
+
+const siteMusic =
+  document.getElementById(
+    "siteMusic"
+  );
+
+const savedTime =
+  parseFloat(
+    localStorage.getItem(
+      "musicTime"
+    )
+  ) || 0;
+
+const wasPlaying =
+  localStorage.getItem(
+    "musicPlaying"
+  ) === "true";
+
+siteMusic.addEventListener(
+  "loadedmetadata",
+  async() => {
+
+    if (
+      savedTime <
+      siteMusic.duration
+    ) {
+      siteMusic.currentTime =
+        savedTime;
+    }
+
+    if (wasPlaying) {
+
+      try {
+
+        await siteMusic.play();
+
+        musicButton
+          .classList
+          .add("playing");
+
+      } catch {}
+
+    }
+
+  }
+);
+
+musicButton.addEventListener(
+  "click",
+  async() => {
+
+    if (siteMusic.paused) {
+
+      try {
+
+        await siteMusic.play();
+
+        localStorage.setItem(
+          "musicPlaying",
+          "true"
+        );
+
+        musicButton
+          .classList
+          .add("playing");
+
+      } catch {}
+
+    } else {
+
+      siteMusic.pause();
+
+      localStorage.setItem(
+        "musicPlaying",
+        "false"
+      );
+
+      musicButton
+        .classList
+        .remove("playing");
+
+    }
+
+  }
+);
+
+siteMusic.addEventListener(
+  "timeupdate",
+  () => {
+
+    localStorage.setItem(
+      "musicTime",
+      siteMusic.currentTime
+    );
+
+  }
+);
+
+window.addEventListener(
+  "pagehide",
+  () => {
+
+    localStorage.setItem(
+      "musicTime",
+      siteMusic.currentTime
+    );
+
+    localStorage.setItem(
+      "musicPlaying",
+      String(!siteMusic.paused)
+    );
+
+  }
+);
+
 </script>
+
 </body>
 </html>
