@@ -120,8 +120,7 @@ export default {
       url.pathname.match(/^\/api\/thoughts\/\d+\/entries$/) &&
       request.method === "POST"
     ) {
-      const parts = url.pathname.split("/");
-      const thoughtId = parts[3];
+      const thoughtId = url.pathname.split("/")[3];
 
       const data = await request.json();
       const content = data.content?.trim();
@@ -147,10 +146,25 @@ export default {
       }
 
       const result = await env.DB.prepare(
-        `INSERT INTO thought_entries (thought_id, content)
-         VALUES (?, ?)`
+        `INSERT INTO thought_entries
+         (
+           thought_id,
+           content,
+           original_date,
+           original_date_label,
+           entry_types,
+           custom_type
+         )
+         VALUES (?, ?, ?, ?, ?, ?)`
       )
-        .bind(thoughtId, content)
+        .bind(
+          thoughtId,
+          content,
+          data.original_date || null,
+          data.original_date_label?.trim() || null,
+          data.entry_types?.trim() || null,
+          data.custom_type?.trim() || null
+        )
         .run();
 
       await env.DB.prepare(
@@ -189,10 +203,21 @@ export default {
 
       await env.DB.prepare(
         `UPDATE thought_entries
-         SET content = ?
+         SET content = ?,
+             original_date = ?,
+             original_date_label = ?,
+             entry_types = ?,
+             custom_type = ?
          WHERE id = ?`
       )
-        .bind(content, id)
+        .bind(
+          content,
+          data.original_date || null,
+          data.original_date_label?.trim() || null,
+          data.entry_types?.trim() || null,
+          data.custom_type?.trim() || null,
+          id
+        )
         .run();
 
       const entry = await env.DB.prepare(
@@ -202,6 +227,22 @@ export default {
         .first();
 
       return Response.json(entry);
+    }
+
+    // Delete an individual entry
+    if (
+      url.pathname.match(/^\/api\/entries\/\d+$/) &&
+      request.method === "DELETE"
+    ) {
+      const id = url.pathname.split("/").pop();
+
+      await env.DB.prepare(
+        `DELETE FROM thought_entries WHERE id = ?`
+      )
+        .bind(id)
+        .run();
+
+      return Response.json({ success: true });
     }
 
     // Delete a thought and everything inside it
@@ -225,12 +266,16 @@ export default {
 
       return Response.json({ success: true });
     }
+
     // ─────────────────────────────────────────────
     // NARRATIVE MEDICINE CONCEPT MAP
     // ─────────────────────────────────────────────
 
     // Get all connections for a section
-    if (url.pathname === "/api/connections" && request.method === "GET") {
+    if (
+      url.pathname === "/api/connections" &&
+      request.method === "GET"
+    ) {
       const section = url.searchParams.get("section");
 
       const { results } = await env.DB.prepare(
@@ -245,7 +290,10 @@ export default {
     }
 
     // Connect two thoughts
-    if (url.pathname === "/api/connections" && request.method === "POST") {
+    if (
+      url.pathname === "/api/connections" &&
+      request.method === "POST"
+    ) {
       const data = await request.json();
 
       const section = data.section?.trim();
@@ -266,8 +314,6 @@ export default {
         );
       }
 
-      // Always store the smaller ID first so the same
-      // connection cannot accidentally be created twice.
       if (thoughtA > thoughtB) {
         [thoughtA, thoughtB] = [thoughtB, thoughtA];
       }
@@ -333,7 +379,10 @@ export default {
     }
 
     // Get saved bubble positions
-    if (url.pathname === "/api/positions" && request.method === "GET") {
+    if (
+      url.pathname === "/api/positions" &&
+      request.method === "GET"
+    ) {
       const section = url.searchParams.get("section");
 
       const { results } = await env.DB.prepare(
@@ -349,7 +398,10 @@ export default {
     }
 
     // Save a bubble position
-    if (url.pathname === "/api/positions" && request.method === "POST") {
+    if (
+      url.pathname === "/api/positions" &&
+      request.method === "POST"
+    ) {
       const data = await request.json();
 
       const thoughtId = Number(data.thought_id);
@@ -400,6 +452,7 @@ export default {
         y
       });
     }
+
     return env.ASSETS.fetch(request);
   }
 };
