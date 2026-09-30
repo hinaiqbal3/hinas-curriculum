@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Index — Hina's Curriculum</title>
+<style>
+:root{--bg:#f5f0e8;--text:#625b4f;--soft:#8b8375;--line:rgba(98,91,79,.23)}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--text);font-family:"Helvetica Neue",Helvetica,Arial,sans-serif;font-weight:300}
+button,input,textarea,select{font:inherit;color:inherit}.page{width:min(1120px,calc(100% - 80px));margin:auto;padding:58px 0 110px}
+.topline{display:flex;justify-content:space-between;font-size:11px;text-transform:uppercase;letter-spacing:.15em;color:var(--soft)}
+.topline a{color:inherit;text-decoration:none}header{padding:72px 0 48px}h1{margin:0;font-size:clamp(65px,10vw,122px);line-height:.9;font-weight:300;letter-spacing:-.065em}
+.intro{margin:30px 0 0;max-width:690px;color:var(--soft);font-size:17px;line-height:1.65}
+.search-wrap{border-top:1px solid var(--line);border-bottom:1px solid var(--line);padding:20px 0}
+.search{width:100%;border:0;outline:0;background:transparent;font-size:23px;font-weight:300}.search::placeholder{color:rgba(98,91,79,.42)}
+.search-status{margin-top:8px;font-size:10px;text-transform:uppercase;letter-spacing:.11em;color:var(--soft)}
+.composer{padding:30px 0 34px}.label{font-size:10px;text-transform:uppercase;letter-spacing:.13em;color:var(--soft);margin-bottom:10px}
+.new-title{width:100%;border:0;border-bottom:1px solid var(--line);outline:0;background:transparent;padding:5px 0 13px;font-size:25px}
+.actions{display:flex;gap:10px;flex-wrap:wrap;margin-top:12px}.actions .danger{margin-left:auto;opacity:.65}
+.btn{border:1px solid var(--line);background:transparent;border-radius:999px;padding:9px 15px;cursor:pointer;font-size:10px;text-transform:uppercase;letter-spacing:.11em}
+.btn:hover{background:rgba(255,255,255,.3)}.list{border-bottom:1px solid var(--line)}.item{border-top:1px solid var(--line)}
+.row{width:100%;border:0;background:transparent;cursor:pointer;display:grid;grid-template-columns:55px minmax(0,1fr) auto;gap:20px;align-items:center;text-align:left;padding:25px 0}
+.num,.meta{font-size:10px;text-transform:uppercase;letter-spacing:.1em;color:var(--soft)}.title{font-size:clamp(25px,3.3vw,39px);letter-spacing:-.035em;line-height:1.08}
+.plus{font-size:21px;transition:transform .2s}.item.open .plus{transform:rotate(45deg)}.drawer{display:none;padding:0 0 42px 75px}.item.open .drawer{display:block}
+.entry{border-top:1px solid var(--line);padding:25px 0}.entry:first-child{border-top:0}.entry-date{font-size:11px;text-transform:uppercase;letter-spacing:.11em;color:var(--soft);margin-bottom:12px}
+.entry-text{white-space:pre-wrap;overflow-wrap:anywhere;font-size:16px;line-height:1.82}.entry-tools{margin-top:14px;display:flex;gap:8px}
+.entry-tools button{border:0;background:transparent;padding:0;cursor:pointer;font-size:10px;text-transform:uppercase;letter-spacing:.1em;color:var(--soft)}
+.editor{border-top:1px solid var(--line);padding-top:27px;margin-top:8px}.date-fields{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:14px}
+.date-fields input,.date-fields select{width:100%;border:0;border-bottom:1px solid var(--line);background:transparent;outline:0;padding:10px 0;font-size:14px}
+.type-picker{margin:18px 0 16px}.type-options{display:flex;flex-wrap:wrap;gap:12px 22px;align-items:center}.type-option{display:flex;align-items:center;gap:8px;font-size:14px;color:var(--soft)}.custom-type{display:flex;align-items:center;gap:8px;min-width:260px;flex:1}.custom-type input[type="text"]{width:100%;border:0;border-bottom:1px solid var(--line);background:transparent;outline:0;padding:7px 0}.entry-tags{font-size:10px;text-transform:uppercase;letter-spacing:.11em;color:var(--soft);margin:-5px 0 14px}
+.textbox{width:100%;min-height:360px;resize:vertical;border:1px solid var(--line);background:rgba(255,255,255,.13);outline:0;padding:18px;font-size:16px;line-height:1.75}
+.empty{border-top:1px solid var(--line);padding:42px 0;color:var(--soft)}mark{background:rgba(196,170,113,.22);color:inherit}
+.music-player{position:fixed;right:30px;bottom:30px;z-index:100}.music-button{width:54px;height:54px;padding:0;border:4px solid currentColor;border-radius:48% 52% 50% 46%/51% 47% 53% 49%;background:rgba(255,255,255,.12);color:inherit;cursor:pointer;display:flex;align-items:center;justify-content:center}
+.play-icon{width:0;height:0;margin-left:3px;border-top:7px solid transparent;border-bottom:7px solid transparent;border-left:11px solid currentColor}.music-button.playing .play-icon{width:11px;height:15px;margin-left:0;border:0;border-left:4px solid currentColor;border-right:4px solid currentColor}
+@media(max-width:720px){.page{width:calc(100% - 40px);padding-top:35px}header{padding:55px 0 40px}.row{grid-template-columns:38px 1fr;gap:10px}.row .meta{grid-column:2}.drawer{padding-left:48px}.date-fields{grid-template-columns:1fr}.textbox{min-height:280px}.music-player{right:20px;bottom:20px}.music-button{width:48px;height:48px;border-width:3px}}
+</style>
+</head>
+<body>
+<main class="page">
+<div class="topline"><a href="index.html">Hina's Curriculum</a><span>Personal Archive</span></div>
+<header><h1>index</h1><p class="intro">an archive of what I have written, noticed, lived through, and wanted to remember — gathered from journals, notebooks, and earlier versions of myself.</p></header>
+
+<section class="search-wrap">
+<input id="search" class="search" type="search" placeholder="search the archive...">
+<div id="searchStatus" class="search-status">searches subsection titles and the full text of every entry</div>
+</section>
+
+<section class="composer">
+<div class="label">new subsection</div>
+<input id="newTitle" class="new-title" placeholder="e.g. Journal · 2018, Medical School, Residency · PGY-1...">
+<div class="actions"><button id="addSection" class="btn" type="button">add to index</button></div>
+</section>
+
+<section id="list" class="list"></section>
+</main>
+
+<div class="music-player"><button class="music-button" id="musicButton" type="button" aria-label="Play music"><span class="play-icon"></span></button></div>
+<audio id="siteMusic" loop preload="auto"><source src="doria.mp3" type="audio/mpeg"></audio>
+
+<script>
+const SECTION="personal-index";
+const list=document.getElementById("list"),search=document.getElementById("search"),searchStatus=document.getElementById("searchStatus"),newTitle=document.getElementById("newTitle"),addSection=document.getElementById("addSection");
+let sections=[],details=new Map();
+
+function displayDate(e){
+  if(e.original_date_label) return e.original_date_label;
+  if(e.original_date) return new Date(e.original_date+"T12:00:00").toLocaleDateString(undefined,{year:"numeric",month:"long",day:"numeric"});
+  return "date unknown";
+}
+function escapeHTML(s){return String(s??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#039;"}[c]))}
+function highlight(text,q){
+  if(!q)return escapeHTML(text);
+  const safe=escapeHTML(text),needle=q.replace(/[.*+?^${}()|[\]\\]/g,"\\$&");
+  return safe.replace(new RegExp(`(${needle})`,"gi"),"<mark>$1</mark>");
+}
+async function getDetail(id,force=false){
+  if(details.has(id)&&!force)return details.get(id);
+  const r=await fetch(`/api/thoughts/${id}`),d=await r.json();details.set(id,d);return d;
+}
+async function load(){
+  const r=await fetch(`/api/thoughts?section=${encodeURIComponent(SECTION)}`);sections=await r.json();
+  await Promise.all(sections.map(s=>getDetail(s.id)));
+  render();
+}
+function render(){
+  const q=search.value.trim().toLowerCase();list.innerHTML="";let shown=0,matchEntries=0;
+  sections.forEach((s,i)=>{
+    const d=details.get(s.id)||{entries:[]};
+    const titleHit=s.title.toLowerCase().includes(q);
+    const hits=(d.entries||[]).filter(e=>!q||e.content.toLowerCase().includes(q)||(e.original_date_label||"").toLowerCase().includes(q)||(e.original_date||"").includes(q)||(e.entry_types||"").toLowerCase().includes(q)||(e.custom_type||"").toLowerCase().includes(q));
+    if(q&&!titleHit&&!hits.length)return;
+    shown++;matchEntries+=hits.length;
+    const item=document.createElement("article");item.className="item"+(q?" open":"");item.dataset.id=s.id;
+    const row=document.createElement("button");row.className="row";row.type="button";
+    row.innerHTML=`<span class="num">${String(i+1).padStart(2,"0")}</span><span class="title">${highlight(s.title,q)}</span><span class="meta">${q?`${hits.length} text match${hits.length===1?"":"es"}`:"open"} &nbsp; <span class="plus">+</span></span>`;
+    const drawer=document.createElement("div");drawer.className="drawer";
+    row.addEventListener("click",()=>{item.classList.toggle("open");if(item.classList.contains("open"))drawDrawer(drawer,d,q)});
+    item.append(row,drawer);list.append(item);if(q)drawDrawer(drawer,d,q);
+  });
+  if(!shown)list.innerHTML='<div class="empty">no matches in the archive.</div>';
+  searchStatus.textContent=q?`${shown} subsection${shown===1?"":"s"} · ${matchEntries} matching text entr${matchEntries===1?"y":"ies"}`:"searches subsection titles and the full text of every entry";
+}
+function drawDrawer(drawer,d,q=""){
+  drawer.innerHTML="";
+  let entries=(d.entries||[]).filter(e=>!q||e.content.toLowerCase().includes(q)||(e.original_date_label||"").toLowerCase().includes(q)||(e.original_date||"").includes(q)||(e.entry_types||"").toLowerCase().includes(q)||(e.custom_type||"").toLowerCase().includes(q));
+  entries.forEach(e=>{
+    const block=document.createElement("div");block.className="entry";
+    const types=[];const savedTypes=(e.entry_types||"").split(",").map(x=>x.trim()).filter(Boolean);if(savedTypes.includes("journal"))types.push("Journal Entry");if(savedTypes.includes("blog"))types.push("Blog Post");if(e.custom_type)types.push(e.custom_type);
+    block.innerHTML=`<div class="entry-date">${escapeHTML(displayDate(e))}</div>${types.length?`<div class="entry-tags">${types.map(escapeHTML).join(" · ")}</div>`:""}<div class="entry-text">${highlight(e.content,q)}</div><div class="entry-tools"><button type="button" data-edit>edit</button></div>`;
+    block.querySelector("[data-edit]").addEventListener("click",()=>editEntry(drawer,d,e));drawer.append(block);
+  });
+  if(!q)drawer.append(makeEditor(d,drawer));
+}
+function makeEditor(d,drawer,existing=null){
+  const wrap=document.createElement("div");wrap.className="editor";
+  wrap.innerHTML=`<div class="label">${existing?"edit entry":"add text to this subsection"}</div>
+  <div class="date-fields"><input class="exact-date" type="date" aria-label="Exact original date"><input class="date-label" placeholder="or type a flexible date: March 2018, Summer 2014..."></div>
+  <div class="type-picker"><div class="label">type</div><div class="type-options">
+    <label class="type-option"><input class="type-journal" type="checkbox"> journal entry</label>
+    <label class="type-option"><input class="type-blog" type="checkbox"> blog post</label>
+    <label class="type-option custom-type"><input class="type-other" type="checkbox"> other <input class="custom-type-text" type="text" placeholder="write your own label..."></label>
+  </div></div>
+  <textarea class="textbox" placeholder="Paste or type as much of the original writing as you need..."></textarea>
+  <div class="actions"><button class="btn save" type="button">${existing?"save changes":"save entry"}</button>${existing?'<button class="btn cancel" type="button">cancel</button>':""}${existing?'<button class="btn danger delete" type="button">delete entry</button>':""}</div>`;
+  const exact=wrap.querySelector(".exact-date"),label=wrap.querySelector(".date-label"),box=wrap.querySelector(".textbox");
+  const journal=wrap.querySelector(".type-journal"),blog=wrap.querySelector(".type-blog"),other=wrap.querySelector(".type-other"),custom=wrap.querySelector(".custom-type-text");
+  if(existing){exact.value=existing.original_date||"";label.value=existing.original_date_label||"";box.value=existing.content;const saved=(existing.entry_types||"").split(",");journal.checked=saved.includes("journal");blog.checked=saved.includes("blog");custom.value=existing.custom_type||"";other.checked=Boolean(existing.custom_type)}
+  custom.addEventListener("input",()=>{if(custom.value.trim())other.checked=true});other.addEventListener("change",()=>{if(!other.checked)custom.value=""});
+  wrap.querySelector(".save").addEventListener("click",async()=>{
+    const content=box.value.trim();if(!content)return;
+    const selected=[];if(journal.checked)selected.push("journal");if(blog.checked)selected.push("blog");
+    const payload={content,original_date:exact.value||null,original_date_label:label.value.trim()||null,entry_types:selected.join(","),custom_type:other.checked?(custom.value.trim()||null):null};
+    if(existing){
+      await fetch(`/api/entries/${existing.id}`,{method:"PATCH",headers:{"Content-Type":"application/json"},body:JSON.stringify(payload)});
+    }else{
+      await fetch(`/api/thoughts/${d.id}/entries`,{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify(payload)});
+    }
+    const fresh=await getDetail(d.id,true);drawDrawer(drawer,fresh);
+  });
+  if(existing){
+    wrap.querySelector(".cancel").addEventListener("click",()=>drawDrawer(drawer,d));
+    wrap.querySelector(".delete").addEventListener("click",async()=>{if(!confirm("Delete this journal entry?"))return;await fetch(`/api/entries/${existing.id}`,{method:"DELETE"});const fresh=await getDetail(d.id,true);drawDrawer(drawer,fresh)});
+  }
+  return wrap;
+}
+function editEntry(drawer,d,e){drawer.innerHTML="";drawer.append(makeEditor(d,drawer,e))}
+async function createSection(){
+  const title=newTitle.value.trim();if(!title)return;
+  addSection.disabled=true;
+  await fetch("/api/thoughts",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({section:SECTION,title,body:""})});
+  newTitle.value="";details.clear();addSection.disabled=false;await load();
+}
+addSection.addEventListener("click",createSection);newTitle.addEventListener("keydown",e=>{if(e.key==="Enter")createSection()});search.addEventListener("input",render);load();
+
+const musicButton=document.getElementById("musicButton"),siteMusic=document.getElementById("siteMusic");
+const savedTime=parseFloat(localStorage.getItem("musicTime"))||0,wasPlaying=localStorage.getItem("musicPlaying")==="true";
+siteMusic.addEventListener("loadedmetadata",async()=>{if(savedTime<siteMusic.duration)siteMusic.currentTime=savedTime;if(wasPlaying){try{await siteMusic.play();musicButton.classList.add("playing")}catch{}}});
+musicButton.addEventListener("click",async()=>{if(siteMusic.paused){try{await siteMusic.play();localStorage.setItem("musicPlaying","true");musicButton.classList.add("playing")}catch{}}else{siteMusic.pause();localStorage.setItem("musicPlaying","false");musicButton.classList.remove("playing")}});
+siteMusic.addEventListener("timeupdate",()=>localStorage.setItem("musicTime",siteMusic.currentTime));
+window.addEventListener("pagehide",()=>{localStorage.setItem("musicTime",siteMusic.currentTime);localStorage.setItem("musicPlaying",String(!siteMusic.paused))});
+</script>
+</body>
+</html>
